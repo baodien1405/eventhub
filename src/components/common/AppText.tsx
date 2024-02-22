@@ -14,7 +14,7 @@ interface AppTextProps {
   onPress?: () => void
 }
 
-export function AppText({
+export const AppText = ({
   text,
   size = 14,
   font = FONT_FAMILIES.regular,
@@ -23,7 +23,7 @@ export function AppText({
   styles,
   numberOfLines,
   onPress
-}: AppTextProps) {
+}: AppTextProps) => {
   return (
     <Text
       numberOfLines={numberOfLines}
