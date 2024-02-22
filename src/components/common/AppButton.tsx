@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 import { StyleProp, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
 
-import { AppText } from '@/components'
+import { AppText, Row } from '@/components'
 import { globalStyles } from '@/styles'
 import { COLORS } from '@/constants'
 
@@ -31,22 +31,36 @@ export const AppButton = ({
 }: AppButtonProps) => {
   if (type === 'primary') {
     return (
-      <TouchableOpacity
-        onPress={onPress}
-        style={[
-          globalStyles.button,
-          {
-            backgroundColor: color
-          },
-          styles
-        ]}
-      >
-        {prefixIcon && <View>{prefixIcon}</View>}
+      <Row>
+        <TouchableOpacity
+          onPress={onPress}
+          style={[
+            globalStyles.button,
+            globalStyles.shadow,
+            {
+              backgroundColor: color,
+              width: '80%'
+            },
+            styles
+          ]}
+        >
+          {prefixIcon && <View>{prefixIcon}</View>}
 
-        <AppText text={text} color={textColor} styles={textStyles} />
+          <AppText
+            text={text}
+            color={textColor}
+            styles={[
+              textStyles,
+              {
+                paddingLeft: prefixIcon ? 20 : 0,
+                paddingRight: suffixIcon ? 20 : 0
+              }
+            ]}
+          />
 
-        {suffixIcon && <View>{suffixIcon}</View>}
-      </TouchableOpacity>
+          {suffixIcon && <View>{suffixIcon}</View>}
+        </TouchableOpacity>
+      </Row>
     )
   }
 

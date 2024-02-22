@@ -12,6 +12,10 @@ export const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  section: {
+    paddingHorizontal: 30,
+    paddingBottom: 20
+  },
   text: {
     fontSize: 14,
     fontFamily: FONT_FAMILIES.regular,
@@ -22,7 +26,7 @@ export const globalStyles = StyleSheet.create({
     paddingHorizontal: 18,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignContent: 'center',
+    alignItems: 'center',
     borderRadius: 12
   },
   inputContainer: {
@@ -34,5 +38,15 @@ export const globalStyles = StyleSheet.create({
     paddingHorizontal: 15,
     borderWidth: 1,
     borderColor: COLORS.gray3
+  },
+  shadow: {
+    shadowColor: 'rgba(0,0,0,0.5)',
+    shadowOffset: {
+      width: 0,
+      height: 4
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 6
   }
 })

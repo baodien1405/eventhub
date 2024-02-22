@@ -3,9 +3,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { SCREENS } from '@/constants'
 import { LoginScreen, OnboardingScreen, SignUpScreen } from '@/screens/auth'
+import { RootStackParamList } from '@/models'
 
 export const AuthNavigator = () => {
-  const Stack = createNativeStackNavigator()
+  const Stack = createNativeStackNavigator<RootStackParamList>()
 
   return (
     <Stack.Navigator

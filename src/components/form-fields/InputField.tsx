@@ -130,7 +130,7 @@ export function InputField<T extends FieldValues>({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 19
+    marginBottom: 20
   },
   label: {
     marginBottom: 8
