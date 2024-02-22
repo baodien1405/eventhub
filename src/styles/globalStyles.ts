@@ -7,6 +7,11 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: COLORS.bgColor,
     paddingTop: 20
   },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   text: {
     fontSize: 14,
     fontFamily: FONT_FAMILIES.regular,
@@ -19,5 +24,15 @@ export const globalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: 'center',
     borderRadius: 12
+  },
+  inputContainer: {
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    borderWidth: 1,
+    borderColor: COLORS.gray3
   }
 })
