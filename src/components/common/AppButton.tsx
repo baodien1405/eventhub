@@ -1,5 +1,12 @@
 import React, { ReactNode } from 'react'
-import { StyleProp, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
+import {
+  ActivityIndicator,
+  StyleProp,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle
+} from 'react-native'
 
 import { AppText } from '@/components'
 import { globalStyles } from '@/styles'
@@ -14,6 +21,7 @@ interface AppButtonProps {
   styles?: StyleProp<ViewStyle>
   textColor?: string
   textStyles?: StyleProp<TextStyle>
+  loading?: boolean
   onPress?: () => void
 }
 
@@ -26,6 +34,7 @@ export const AppButton = ({
   styles,
   textColor,
   textStyles,
+  loading,
   onPress
 }: AppButtonProps) => {
   if (type === 'primary') {
@@ -33,33 +42,41 @@ export const AppButton = ({
       <View style={{ alignItems: 'center' }}>
         <TouchableOpacity
           onPress={onPress}
+          disabled={loading}
           style={[
             globalStyles.button,
             globalStyles.shadow,
             {
               backgroundColor: color,
-              width: '80%'
+              width: '85%',
+              opacity: loading ? 0.8 : 1
             },
             styles
           ]}
         >
-          {prefixIcon && <View>{prefixIcon}</View>}
+          {loading ? (
+            <ActivityIndicator />
+          ) : (
+            <>
+              {prefixIcon && <View>{prefixIcon}</View>}
 
-          <AppText
-            text={text}
-            color={textColor}
-            styles={[
-              textStyles,
-              {
-                paddingLeft: prefixIcon ? 20 : 0,
-                marginLeft: suffixIcon ? 30 : 0,
-                textAlign: 'center'
-              }
-            ]}
-            flex={suffixIcon ? 1 : 0}
-          />
+              <AppText
+                text={text}
+                color={textColor}
+                styles={[
+                  textStyles,
+                  {
+                    paddingLeft: prefixIcon ? 20 : 0,
+                    marginLeft: suffixIcon ? 30 : 0,
+                    textAlign: 'center'
+                  }
+                ]}
+                flex={suffixIcon ? 1 : 0}
+              />
 
-          {suffixIcon && <View>{suffixIcon}</View>}
+              {suffixIcon && <View>{suffixIcon}</View>}
+            </>
+          )}
         </TouchableOpacity>
       </View>
     )

@@ -67,7 +67,7 @@ export function InputField<T extends FieldValues>({
             minHeight: multiline && numberOfLines ? 56 * numberOfLines : 56,
             paddingVertical: multiline && numberOfLines ? 4 : 14,
             alignItems: multiline && numberOfLines ? 'flex-start' : 'center',
-            borderColor: error?.message ? COLORS.danger : COLORS.gray3
+            borderColor: error?.message ? COLORS.error : COLORS.gray3
           }
         ]}
       >
@@ -122,7 +122,7 @@ export function InputField<T extends FieldValues>({
       </Row>
 
       {error?.message && (
-        <AppText text={error.message} color={COLORS.danger} flex={0} styles={styles.errorMessage} />
+        <AppText text={error.message} color={COLORS.error} flex={0} styles={styles.errorMessage} />
       )}
     </View>
   )
