@@ -1,12 +1,11 @@
 import React, { ReactNode } from 'react'
 import { StyleProp, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native'
 
-import { AppText, Row } from '@/components'
+import { AppText } from '@/components'
 import { globalStyles } from '@/styles'
 import { COLORS } from '@/constants'
 
 interface AppButtonProps {
-  icon?: ReactNode
   prefixIcon?: ReactNode
   suffixIcon?: ReactNode
   text: string
@@ -31,7 +30,7 @@ export const AppButton = ({
 }: AppButtonProps) => {
   if (type === 'primary') {
     return (
-      <Row>
+      <View style={{ alignItems: 'center' }}>
         <TouchableOpacity
           onPress={onPress}
           style={[
@@ -53,14 +52,16 @@ export const AppButton = ({
               textStyles,
               {
                 paddingLeft: prefixIcon ? 20 : 0,
-                paddingRight: suffixIcon ? 20 : 0
+                marginLeft: suffixIcon ? 30 : 0,
+                textAlign: 'center'
               }
             ]}
+            flex={suffixIcon ? 1 : 0}
           />
 
           {suffixIcon && <View>{suffixIcon}</View>}
         </TouchableOpacity>
-      </Row>
+      </View>
     )
   }
 

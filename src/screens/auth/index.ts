@@ -1,3 +1,5 @@
 export * from './LoginScreen'
 export * from './SignUpScreen'
 export * from './OnboardingScreen'
+export * from './ForgotPasswordScreen'
+export * from './VerificationScreen'

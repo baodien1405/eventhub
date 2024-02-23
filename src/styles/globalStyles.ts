@@ -27,7 +27,8 @@ export const globalStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 12
+    borderRadius: 12,
+    maxHeight: 58
   },
   inputContainer: {
     backgroundColor: COLORS.white,

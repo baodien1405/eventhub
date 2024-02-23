@@ -1,4 +1,4 @@
-import { Lock, Sms } from 'iconsax-react-native'
+import { ArrowRight, Lock, Sms } from 'iconsax-react-native'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Image, StyleSheet, Switch, View } from 'react-native'
@@ -13,9 +13,10 @@ import {
   Section,
   SocialButtonGroup
 } from '@/components'
-import { COLORS, FONT_FAMILIES } from '@/constants'
+import { COLORS, FONT_FAMILIES, SCREENS } from '@/constants'
+import { LoginScreenProps } from '@/models'
 
-export const LoginScreen = () => {
+export const LoginScreen = ({ navigation }: LoginScreenProps) => {
   const { control } = useForm()
   const [isRememberMe, setIsRememberMe] = useState(false)
 
@@ -60,7 +61,11 @@ export const LoginScreen = () => {
             <AppText text="Remember me" styles={{ marginLeft: 8 }} flex={0} />
           </Row>
 
-          <AppButton text="Forgot Password?" type="text" onPress={() => {}} />
+          <AppButton
+            text="Forgot Password?"
+            type="text"
+            onPress={() => navigation.navigate(SCREENS.FORGOT_PASSWORD_SCREEN)}
+          />
         </Row>
 
         <AppButton
@@ -70,9 +75,13 @@ export const LoginScreen = () => {
             fontSize: 16,
             fontFamily: FONT_FAMILIES.medium,
             fontWeight: '400',
-            flex: 0,
             textTransform: 'uppercase'
           }}
+          suffixIcon={
+            <Row styles={{ height: 30, width: 30, backgroundColor: '#3D56F0', borderRadius: 100 }}>
+              <ArrowRight size={20} color={COLORS.white} />
+            </Row>
+          }
         />
       </Section>
 
@@ -81,7 +90,12 @@ export const LoginScreen = () => {
       <Section>
         <Row>
           <AppText text="Don't have an account? " styles={{ marginLeft: 8 }} flex={0} size={15} />
-          <AppButton text="Sign up" type="link" onPress={() => {}} textStyles={{ fontSize: 15 }} />
+          <AppButton
+            text="Sign up"
+            type="link"
+            textStyles={{ fontSize: 15 }}
+            onPress={() => navigation.navigate(SCREENS.SIGN_UP_SCREEN)}
+          />
         </Row>
       </Section>
     </Container>
