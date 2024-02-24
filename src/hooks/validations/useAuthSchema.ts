@@ -24,7 +24,7 @@ export const useAuthSchema = () => {
     confirmPassword: yup
       .string()
       .required('Please enter a password')
-      .oneOf([yup.ref('newPassword')], 'The password does not match.')
+      .oneOf([yup.ref('password')], 'The password does not match.')
   })
 
   return schema
