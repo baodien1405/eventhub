@@ -5,6 +5,11 @@ export type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login
 
 export type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUpScreen'>
 
+export type VerificationScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'VerificationScreen'
+>
+
 export interface LoginPayload {
   email: string
   password: string

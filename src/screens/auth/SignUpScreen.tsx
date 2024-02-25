@@ -10,12 +10,20 @@ import {
   SocialButtonGroup
 } from '@/components'
 import { SCREENS } from '@/constants'
-import { SignUpScreenProps } from '@/models'
+import { SignUpPayload, SignUpScreenProps } from '@/models'
 
 export const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
+  const handleSignUp = (payload: SignUpPayload) => {
+    navigation.navigate(SCREENS.VERIFICATION_SCREEN, {
+      fullName: payload.fullName,
+      email: payload.email,
+      password: payload.password
+    })
+  }
+
   return (
     <Container isImageBackground isScroll back>
-      <SignUpForm />
+      <SignUpForm onSubmit={handleSignUp} />
 
       <SocialButtonGroup />
 
