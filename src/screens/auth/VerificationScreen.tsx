@@ -10,10 +10,22 @@ import { convertToObscureEmail } from '@/utils'
 export const VerificationScreen = ({ route }: VerificationScreenProps) => {
   const email = route.params.email
   const [codeValueList, setCodeValueList] = useState(['', '', '', ''])
+  const refCode0 = useRef<TextInput | null>(null)
   const refCode1 = useRef<TextInput | null>(null)
   const refCode2 = useRef<TextInput | null>(null)
   const refCode3 = useRef<TextInput | null>(null)
-  const refCode4 = useRef<TextInput | null>(null)
+
+  const getRefCode = (index: number) => {
+    const refList = {
+      0: refCode0,
+      1: refCode1,
+      2: refCode2,
+      3: refCode3,
+      default: refCode0
+    }
+
+    return (refList as any)[index] || refList.default
+  }
 
   const handleTextChange = (index: number, value: string) => {
     const newCodeValueList = [...codeValueList]
@@ -41,50 +53,26 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
         />
 
         <Row justify="space-around">
-          <TextInput
-            value={codeValueList[0]}
-            style={styles.codeInput}
-            placeholder="-"
-            placeholderTextColor={COLORS.gray}
-            keyboardType="number-pad"
-            ref={refCode1}
-            onChangeText={(value) => {
-              handleTextChange(0, value)
-            }}
-          />
-          <TextInput
-            value={codeValueList[1]}
-            style={styles.codeInput}
-            placeholder="-"
-            placeholderTextColor={COLORS.gray}
-            keyboardType="number-pad"
-            ref={refCode2}
-            onChangeText={(value) => {
-              handleTextChange(1, value)
-            }}
-          />
-          <TextInput
-            value={codeValueList[2]}
-            style={styles.codeInput}
-            placeholder="-"
-            placeholderTextColor={COLORS.gray}
-            keyboardType="number-pad"
-            ref={refCode3}
-            onChangeText={(value) => {
-              handleTextChange(2, value)
-            }}
-          />
-          <TextInput
-            value={codeValueList[3]}
-            style={styles.codeInput}
-            placeholder="-"
-            placeholderTextColor={COLORS.gray}
-            keyboardType="number-pad"
-            ref={refCode4}
-            onChangeText={(value) => {
-              handleTextChange(3, value)
-            }}
-          />
+          {codeValueList.map((code, index) => {
+            return (
+              <TextInput
+                key={index}
+                value={code}
+                style={styles.codeInput}
+                placeholder="-"
+                placeholderTextColor={COLORS.gray}
+                keyboardType="number-pad"
+                ref={getRefCode(index)}
+                maxLength={1}
+                onChangeText={(value) => {
+                  if (value && index < 3) {
+                    getRefCode(index + 1).current?.focus()
+                  }
+                  handleTextChange(index, value)
+                }}
+              />
+            )
+          })}
         </Row>
 
         <AppButton
