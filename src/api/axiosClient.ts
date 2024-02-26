@@ -1,10 +1,21 @@
 import axios, { AxiosError } from 'axios'
 
 const axiosClient = axios.create({
-  baseURL: process.env.API_URL,
+  baseURL: 'http://192.168.1.6:8018/v1/api',
   headers: {
     'Content-Type': 'application/json'
   }
+})
+
+axiosClient.interceptors.request.use((config: any) => {
+  config.headers = {
+    Authorization: '',
+    Accept: 'application/json',
+    ...config.headers
+  }
+
+  config.data
+  return config
 })
 
 // Add a response interceptor

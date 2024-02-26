@@ -9,6 +9,7 @@ import { AppButton, AppText, InputField, Row, Section } from '@/components'
 import { COLORS, FONT_FAMILIES, SCREENS } from '@/constants'
 import { useAuthSchema } from '@/hooks'
 import { LoginPayload, RootStackParamList } from '@/models'
+import { globalStyles } from '@/styles'
 
 interface LoginFormProps {
   initialValues?: LoginPayload
@@ -82,7 +83,7 @@ export function LoginForm({ initialValues, onSubmit }: LoginFormProps) {
           textTransform: 'uppercase'
         }}
         suffixIcon={
-          <Row styles={{ height: 30, width: 30, backgroundColor: '#3D56F0', borderRadius: 100 }}>
+          <Row styles={globalStyles.iconContainer}>
             <ArrowRight size={20} color={COLORS.white} />
           </Row>
         }

@@ -2,24 +2,29 @@ import React, { useEffect, useRef, useState } from 'react'
 import { ArrowRight } from 'iconsax-react-native'
 import { StyleSheet, TextInput } from 'react-native'
 
-import { AppButton, AppText, Container, Row, Section, Space } from '@/components'
+import { AppButton, AppText, Container, LoadingModal, Row, Section, Space } from '@/components'
 import { COLORS, FONT_FAMILIES } from '@/constants'
 import { VerificationScreenProps } from '@/models'
 import { convertSecondsTimeoutMinutes, convertToObscureEmail } from '@/utils'
 import { useCountDown } from '@/hooks'
+import { globalStyles } from '@/styles'
+import { authApi } from '@/api'
 
 const TIMEOUT_VERIFICATION_CODE = 2 * 60 // 2 minutes
 
 export const VerificationScreen = ({ route }: VerificationScreenProps) => {
-  const email = route.params.email
-  const { counter: timer } = useCountDown(TIMEOUT_VERIFICATION_CODE)
+  const { email, verificationCode, fullName, password } = route.params
+  const [isLoadingResendCode, setIsLoadingResendCode] = useState(false)
+  const [currentCode, setCurrentCode] = useState(verificationCode)
   const [codeValueList, setCodeValueList] = useState(['', '', '', ''])
-  const currentCode = codeValueList.join('')
+  const enteredCode = codeValueList.join('')
 
   const refCode0 = useRef<TextInput | null>(null)
   const refCode1 = useRef<TextInput | null>(null)
   const refCode2 = useRef<TextInput | null>(null)
   const refCode3 = useRef<TextInput | null>(null)
+
+  const { counter: timer, reset: resetTimer } = useCountDown(TIMEOUT_VERIFICATION_CODE)
 
   useEffect(() => {
     refCode0.current?.focus()
@@ -42,6 +47,37 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
     newCodeValueList[index] = value
 
     setCodeValueList(newCodeValueList)
+  }
+
+  const handleResendVerificationCode = async () => {
+    try {
+      setIsLoadingResendCode(true)
+      const response = await authApi.sendVerificationCode(email)
+      setIsLoadingResendCode(false)
+
+      if (response.metadata?.code) {
+        setCurrentCode(response.metadata?.code)
+        resetTimer()
+      }
+    } catch (error) {
+      setIsLoadingResendCode(false)
+    }
+  }
+
+  const handleContinue = async () => {
+    try {
+      if (enteredCode === currentCode) {
+        setIsLoadingResendCode(true)
+        await authApi.register({
+          email,
+          fullName,
+          password
+        })
+        setIsLoadingResendCode(false)
+      }
+    } catch (error) {
+      setIsLoadingResendCode(false)
+    }
   }
 
   return (
@@ -87,7 +123,7 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
 
         <AppButton
           loading={false}
-          disabled={currentCode.length !== 4}
+          disabled={enteredCode.length !== 4 || timer === 0}
           text="Continue"
           textColor={COLORS.white}
           styles={{ marginTop: 40, marginBottom: 24 }}
@@ -98,22 +134,34 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
             textTransform: 'uppercase'
           }}
           suffixIcon={
-            <Row styles={{ height: 30, width: 30, backgroundColor: '#3D56F0', borderRadius: 100 }}>
+            <Row styles={globalStyles.iconContainer}>
               <ArrowRight size={20} color={COLORS.white} />
             </Row>
           }
-          onPress={() => {}}
+          onPress={handleContinue}
         />
 
-        <Row>
-          <AppText text="Re-send code in" flex={0} />
-          <Space width={4} />
-          <AppText
-            text={convertSecondsTimeoutMinutes(timer)}
-            flex={0}
-            styles={{ color: COLORS.link }}
-          />
-        </Row>
+        {timer > 0 ? (
+          <Row>
+            <AppText text="Re-send code in" flex={0} />
+            <Space width={4} />
+            <AppText
+              text={convertSecondsTimeoutMinutes(timer)}
+              flex={0}
+              styles={{ color: COLORS.link }}
+            />
+          </Row>
+        ) : (
+          <Row>
+            <AppButton
+              text="Resend verification code"
+              type="link"
+              onPress={handleResendVerificationCode}
+            />
+          </Row>
+        )}
+
+        <LoadingModal visible={isLoadingResendCode} />
       </Section>
     </Container>
   )

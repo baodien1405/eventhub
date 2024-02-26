@@ -11,14 +11,24 @@ import {
 } from '@/components'
 import { SCREENS } from '@/constants'
 import { SignUpPayload, SignUpScreenProps } from '@/models'
+import { authApi } from '@/api'
 
 export const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
-  const handleSignUp = (payload: SignUpPayload) => {
-    navigation.navigate(SCREENS.VERIFICATION_SCREEN, {
-      fullName: payload.fullName,
-      email: payload.email,
-      password: payload.password
-    })
+  const handleSignUp = async (payload: SignUpPayload) => {
+    try {
+      const response = await authApi.sendVerificationCode(payload.email)
+
+      if (response.metadata?.code) {
+        navigation.navigate(SCREENS.VERIFICATION_SCREEN, {
+          fullName: payload.fullName,
+          email: payload.email,
+          password: payload.password,
+          verificationCode: String(response.metadata.code)
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (

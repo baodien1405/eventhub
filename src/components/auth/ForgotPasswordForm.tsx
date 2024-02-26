@@ -7,6 +7,7 @@ import { AppButton, AppText, InputField, Row, Section } from '@/components'
 import { COLORS, FONT_FAMILIES } from '@/constants'
 import { useAuthSchema } from '@/hooks'
 import { ForgotPasswordPayload } from '@/models'
+import { globalStyles } from '@/styles'
 
 interface ForgotPasswordFormProps {
   initialValues?: ForgotPasswordPayload
@@ -65,7 +66,7 @@ export function ForgotPasswordForm({ initialValues, onSubmit }: ForgotPasswordFo
           textTransform: 'uppercase'
         }}
         suffixIcon={
-          <Row styles={{ height: 30, width: 30, backgroundColor: '#3D56F0', borderRadius: 100 }}>
+          <Row styles={globalStyles.iconContainer}>
             <ArrowRight size={20} color={COLORS.white} />
           </Row>
         }

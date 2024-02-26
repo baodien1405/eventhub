@@ -1,10 +1,13 @@
-import { SignUpPayload } from '@/models'
-
 export type RootStackParamList = {
   LoginScreen: undefined
   SignUpScreen: undefined
   ForgotPasswordScreen: undefined
-  VerificationScreen: Omit<SignUpPayload, 'confirmPassword'>
+  VerificationScreen: {
+    fullName: string
+    email: string
+    password: string
+    verificationCode: string
+  }
   OnboardingScreen: undefined
   HomeScreen: undefined
 }
