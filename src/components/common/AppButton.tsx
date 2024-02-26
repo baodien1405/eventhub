@@ -22,6 +22,7 @@ interface AppButtonProps {
   textColor?: string
   textStyles?: StyleProp<TextStyle>
   loading?: boolean
+  disabled?: boolean
   onPress?: () => void
 }
 
@@ -35,6 +36,7 @@ export const AppButton = ({
   textColor,
   textStyles,
   loading,
+  disabled,
   onPress
 }: AppButtonProps) => {
   if (type === 'primary') {
@@ -42,14 +44,14 @@ export const AppButton = ({
       <View style={{ alignItems: 'center' }}>
         <TouchableOpacity
           onPress={onPress}
-          disabled={loading}
+          disabled={loading || disabled}
           style={[
             globalStyles.button,
             globalStyles.shadow,
             {
               backgroundColor: color,
               width: '85%',
-              opacity: loading ? 0.8 : 1
+              opacity: loading || disabled ? 0.7 : 1
             },
             styles
           ]}

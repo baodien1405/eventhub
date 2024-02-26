@@ -1,19 +1,29 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ArrowRight } from 'iconsax-react-native'
 import { StyleSheet, TextInput } from 'react-native'
 
 import { AppButton, AppText, Container, Row, Section, Space } from '@/components'
 import { COLORS, FONT_FAMILIES } from '@/constants'
 import { VerificationScreenProps } from '@/models'
-import { convertToObscureEmail } from '@/utils'
+import { convertSecondsTimeoutMinutes, convertToObscureEmail } from '@/utils'
+import { useCountDown } from '@/hooks'
+
+const TIMEOUT_VERIFICATION_CODE = 2 * 60 // 2 minutes
 
 export const VerificationScreen = ({ route }: VerificationScreenProps) => {
   const email = route.params.email
+  const { counter: timer } = useCountDown(TIMEOUT_VERIFICATION_CODE)
   const [codeValueList, setCodeValueList] = useState(['', '', '', ''])
+  const currentCode = codeValueList.join('')
+
   const refCode0 = useRef<TextInput | null>(null)
   const refCode1 = useRef<TextInput | null>(null)
   const refCode2 = useRef<TextInput | null>(null)
   const refCode3 = useRef<TextInput | null>(null)
+
+  useEffect(() => {
+    refCode0.current?.focus()
+  }, [])
 
   const getRefCode = (index: number) => {
     const refList = {
@@ -77,6 +87,7 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
 
         <AppButton
           loading={false}
+          disabled={currentCode.length !== 4}
           text="Continue"
           textColor={COLORS.white}
           styles={{ marginTop: 40, marginBottom: 24 }}
@@ -97,7 +108,11 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
         <Row>
           <AppText text="Re-send code in" flex={0} />
           <Space width={4} />
-          <AppText text="0:20" flex={0} styles={{ color: COLORS.link }} />
+          <AppText
+            text={convertSecondsTimeoutMinutes(timer)}
+            flex={0}
+            styles={{ color: COLORS.link }}
+          />
         </Row>
       </Section>
     </Container>
