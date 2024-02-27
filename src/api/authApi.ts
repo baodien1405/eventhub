@@ -19,5 +19,8 @@ export const authApi = {
   },
   sendVerificationCode(email: string): Promise<SuccessResponse<{ code: string }>> {
     return axiosClient.post('/verification', { email })
+  },
+  forgotPassword(email: string): Promise<SuccessResponse<any>> {
+    return axiosClient.post('/forgot-password', { email })
   }
 }

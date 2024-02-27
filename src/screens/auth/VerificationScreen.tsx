@@ -79,7 +79,7 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
         fullName,
         password
       }
-      console.log('🚀 ~ handleContinue ~ payload:', payload)
+
       signUpMutation.mutate(payload, {
         onSuccess: () => {
           setIsAuthenticated(true)
@@ -88,6 +88,8 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
           Toast.error(error.message, 'top')
         }
       })
+    } else {
+      Toast.error('Invalid verification code!', 'top')
     }
   }
 

@@ -10,18 +10,15 @@ import { ForgotPasswordPayload } from '@/models'
 import { globalStyles } from '@/styles'
 
 interface ForgotPasswordFormProps {
+  loading?: boolean
   initialValues?: ForgotPasswordPayload
   onSubmit?: (payload: ForgotPasswordPayload) => void
 }
 
-export function ForgotPasswordForm({ initialValues, onSubmit }: ForgotPasswordFormProps) {
+export function ForgotPasswordForm({ loading, initialValues, onSubmit }: ForgotPasswordFormProps) {
   const schema = useAuthSchema()
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting }
-  } = useForm<ForgotPasswordPayload>({
+  const { control, handleSubmit } = useForm<ForgotPasswordPayload>({
     defaultValues: initialValues,
     resolver: yupResolver(schema.pick(['email']))
   })
@@ -56,7 +53,7 @@ export function ForgotPasswordForm({ initialValues, onSubmit }: ForgotPasswordFo
       />
 
       <AppButton
-        loading={isSubmitting}
+        loading={loading}
         text="Send"
         textColor={COLORS.white}
         textStyles={{
