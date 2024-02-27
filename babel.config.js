@@ -19,7 +19,8 @@ module.exports = {
           '@/utils': './src/utils',
           '@/models': './src/models',
           '@/navigation': './src/navigation',
-          '@/navigators': './src/navigators'
+          '@/navigators': './src/navigators',
+          '@/store': './src/store'
         }
       }
     ],

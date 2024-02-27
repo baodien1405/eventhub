@@ -1,4 +1,5 @@
 import React from 'react'
+import { Toast } from 'toastify-react-native'
 
 import {
   AppButton,
@@ -12,28 +13,32 @@ import {
 import { SCREENS } from '@/constants'
 import { SignUpPayload, SignUpScreenProps } from '@/models'
 import { authApi } from '@/api'
+import { useMutation } from '@tanstack/react-query'
 
 export const SignUpScreen = ({ navigation }: SignUpScreenProps) => {
-  const handleSignUp = async (payload: SignUpPayload) => {
-    try {
-      const response = await authApi.sendVerificationCode(payload.email)
+  const sendVerificationCodeMutation = useMutation({
+    mutationFn: (email: string) => authApi.sendVerificationCode(email)
+  })
 
-      if (response.metadata?.code) {
+  const handleSignUp = async (payload: SignUpPayload) => {
+    sendVerificationCodeMutation.mutate(payload.email, {
+      onSuccess: (data) => {
         navigation.navigate(SCREENS.VERIFICATION_SCREEN, {
           fullName: payload.fullName,
           email: payload.email,
           password: payload.password,
-          verificationCode: String(response.metadata.code)
+          verificationCode: String(data.metadata.code)
         })
+      },
+      onError: (error) => {
+        Toast.error(error.message, 'top')
       }
-    } catch (error) {
-      console.log(error)
-    }
+    })
   }
 
   return (
     <Container isImageBackground isScroll back>
-      <SignUpForm onSubmit={handleSignUp} />
+      <SignUpForm loading={sendVerificationCodeMutation.isPending} onSubmit={handleSignUp} />
 
       <SocialButtonGroup />
 

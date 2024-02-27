@@ -10,18 +10,15 @@ import { SignUpPayload } from '@/models'
 import { globalStyles } from '@/styles'
 
 interface SignUpFormProps {
+  loading?: boolean
   initialValues?: SignUpPayload
   onSubmit?: (payload: SignUpPayload) => void
 }
 
-export function SignUpForm({ initialValues, onSubmit }: SignUpFormProps) {
+export function SignUpForm({ loading, initialValues, onSubmit }: SignUpFormProps) {
   const schema = useAuthSchema()
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting }
-  } = useForm<SignUpPayload>({
+  const { control, handleSubmit } = useForm<SignUpPayload>({
     defaultValues: initialValues,
     resolver: yupResolver(schema)
   })
@@ -67,7 +64,7 @@ export function SignUpForm({ initialValues, onSubmit }: SignUpFormProps) {
       />
 
       <AppButton
-        loading={isSubmitting}
+        loading={loading}
         text="Sign up"
         textColor={COLORS.white}
         textStyles={{

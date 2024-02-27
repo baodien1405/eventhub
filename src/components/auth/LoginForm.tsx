@@ -13,25 +13,22 @@ import { globalStyles } from '@/styles'
 
 interface LoginFormProps {
   initialValues?: LoginPayload
+  loading?: boolean
   onSubmit?: (payload: LoginPayload) => void
 }
 
-export function LoginForm({ initialValues, onSubmit }: LoginFormProps) {
+export function LoginForm({ initialValues, loading, onSubmit }: LoginFormProps) {
   const schema = useAuthSchema()
   const navigation = useNavigation<NavigationProp<RootStackParamList>>()
   const [isRememberMe, setIsRememberMe] = useState(false)
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting }
-  } = useForm<LoginPayload>({
+  const { control, handleSubmit } = useForm<LoginPayload>({
     defaultValues: initialValues,
     resolver: yupResolver(schema.pick(['email', 'password']))
   })
 
-  const handleFormSubmit = async (formValues: LoginPayload) => {
-    await onSubmit?.(formValues)
+  const handleFormSubmit = (formValues: LoginPayload) => {
+    onSubmit?.(formValues)
   }
 
   return (
@@ -74,7 +71,7 @@ export function LoginForm({ initialValues, onSubmit }: LoginFormProps) {
 
       <AppButton
         text="Sign in"
-        loading={isSubmitting}
+        loading={loading}
         textColor={COLORS.white}
         textStyles={{
           fontSize: 16,

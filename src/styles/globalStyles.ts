@@ -1,4 +1,4 @@
-import { COLORS, FONT_FAMILIES } from '@/constants'
+import { APP, COLORS, FONT_FAMILIES } from '@/constants'
 import { StyleSheet } from 'react-native'
 
 export const globalStyles = StyleSheet.create({
@@ -55,5 +55,17 @@ export const globalStyles = StyleSheet.create({
     width: 30,
     backgroundColor: '#3D56F0',
     borderRadius: 100
+  },
+  modalContainer: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  modalContent: {
+    padding: 16,
+    borderRadius: 10,
+    width: APP.sizes.WIDTH - 32,
+    backgroundColor: COLORS.white
   }
 })

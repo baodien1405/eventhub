@@ -1,5 +1,7 @@
 import React from 'react'
 import { Image, StyleSheet, View } from 'react-native'
+import { useMutation } from '@tanstack/react-query'
+import { Toast } from 'toastify-react-native'
 
 import { IMAGES } from '@/assets/images'
 import {
@@ -12,16 +14,35 @@ import {
   SocialButtonGroup
 } from '@/components'
 import { SCREENS } from '@/constants'
-import { LoginScreenProps } from '@/models'
+import { LoginPayload, LoginScreenProps } from '@/models'
+import { authApi } from '@/api'
+import { useAuthStore } from '@/store'
 
 export const LoginScreen = ({ navigation }: LoginScreenProps) => {
+  const { setIsAuthenticated } = useAuthStore()
+
+  const loginMutation = useMutation({
+    mutationFn: (body: LoginPayload) => authApi.login(body)
+  })
+
+  const handleLogin = (payload: LoginPayload) => {
+    loginMutation.mutate(payload, {
+      onSuccess: () => {
+        setIsAuthenticated(true)
+      },
+      onError: (error) => {
+        Toast.error(error.message, 'top')
+      }
+    })
+  }
+
   return (
     <Container isImageBackground isScroll>
       <View style={styles.wrapperLogo}>
         <Image source={IMAGES.textLogo} style={styles.logo} />
       </View>
 
-      <LoginForm />
+      <LoginForm loading={loginMutation.isPending} onSubmit={handleLogin} />
 
       <SocialButtonGroup />
 

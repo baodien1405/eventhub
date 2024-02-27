@@ -1,20 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { ArrowRight } from 'iconsax-react-native'
 import { StyleSheet, TextInput } from 'react-native'
+import { Toast } from 'toastify-react-native'
+import { useMutation } from '@tanstack/react-query'
 
 import { AppButton, AppText, Container, LoadingModal, Row, Section, Space } from '@/components'
 import { COLORS, FONT_FAMILIES } from '@/constants'
-import { VerificationScreenProps } from '@/models'
+import { SignUpPayload, VerificationScreenProps } from '@/models'
 import { convertSecondsTimeoutMinutes, convertToObscureEmail } from '@/utils'
 import { useCountDown } from '@/hooks'
 import { globalStyles } from '@/styles'
 import { authApi } from '@/api'
+import { useAuthStore } from '@/store'
 
 const TIMEOUT_VERIFICATION_CODE = 2 * 60 // 2 minutes
 
 export const VerificationScreen = ({ route }: VerificationScreenProps) => {
   const { email, verificationCode, fullName, password } = route.params
-  const [isLoadingResendCode, setIsLoadingResendCode] = useState(false)
   const [currentCode, setCurrentCode] = useState(verificationCode)
   const [codeValueList, setCodeValueList] = useState(['', '', '', ''])
   const enteredCode = codeValueList.join('')
@@ -24,7 +26,16 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
   const refCode2 = useRef<TextInput | null>(null)
   const refCode3 = useRef<TextInput | null>(null)
 
+  const { setIsAuthenticated } = useAuthStore()
   const { counter: timer, reset: resetTimer } = useCountDown(TIMEOUT_VERIFICATION_CODE)
+
+  const sendVerificationCodeMutation = useMutation({
+    mutationFn: (receiveEmail: string) => authApi.sendVerificationCode(receiveEmail)
+  })
+
+  const signUpMutation = useMutation({
+    mutationFn: (body: Omit<SignUpPayload, 'confirmPassword'>) => authApi.register(body)
+  })
 
   useEffect(() => {
     refCode0.current?.focus()
@@ -50,33 +61,33 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
   }
 
   const handleResendVerificationCode = async () => {
-    try {
-      setIsLoadingResendCode(true)
-      const response = await authApi.sendVerificationCode(email)
-      setIsLoadingResendCode(false)
-
-      if (response.metadata?.code) {
-        setCurrentCode(response.metadata?.code)
+    sendVerificationCodeMutation.mutate(email, {
+      onSuccess: (data) => {
+        setCurrentCode(data.metadata?.code)
         resetTimer()
+      },
+      onError: (error) => {
+        Toast.error(error.message, 'top')
       }
-    } catch (error) {
-      setIsLoadingResendCode(false)
-    }
+    })
   }
 
   const handleContinue = async () => {
-    try {
-      if (enteredCode === currentCode) {
-        setIsLoadingResendCode(true)
-        await authApi.register({
-          email,
-          fullName,
-          password
-        })
-        setIsLoadingResendCode(false)
+    if (enteredCode === currentCode) {
+      const payload = {
+        email,
+        fullName,
+        password
       }
-    } catch (error) {
-      setIsLoadingResendCode(false)
+      console.log('🚀 ~ handleContinue ~ payload:', payload)
+      signUpMutation.mutate(payload, {
+        onSuccess: () => {
+          setIsAuthenticated(true)
+        },
+        onError: (error) => {
+          Toast.error(error.message, 'top')
+        }
+      })
     }
   }
 
@@ -122,7 +133,7 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
         </Row>
 
         <AppButton
-          loading={false}
+          loading={signUpMutation.isPending}
           disabled={enteredCode.length !== 4 || timer === 0}
           text="Continue"
           textColor={COLORS.white}
@@ -161,7 +172,9 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
           </Row>
         )}
 
-        <LoadingModal visible={isLoadingResendCode} />
+        <LoadingModal
+          visible={sendVerificationCodeMutation.isPending || signUpMutation.isPending}
+        />
       </Section>
     </Container>
   )
