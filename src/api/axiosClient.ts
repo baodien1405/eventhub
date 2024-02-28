@@ -5,6 +5,7 @@ import { AuthResponse } from '@/models'
 
 const axiosClient = axios.create({
   baseURL: 'http://192.168.1.6:8018/v1/api',
+  // baseURL: 'http://192.168.10.84:8018/v1/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'

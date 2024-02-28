@@ -1,4 +1,4 @@
-import { LoginPayload, SuccessResponse, SignUpPayload } from '@/models'
+import { LoginPayload, SuccessResponse, SignUpPayload, GoogleLoginPayload } from '@/models'
 import axiosClient from './axiosClient'
 
 export const URL_LOGIN = '/login'
@@ -22,5 +22,8 @@ export const authApi = {
   },
   forgotPassword(email: string): Promise<SuccessResponse<any>> {
     return axiosClient.post('/forgot-password', { email })
+  },
+  signInWithGoogle(payload: GoogleLoginPayload): Promise<SuccessResponse<any>> {
+    return axiosClient.post('/google-sign-in', payload)
   }
 }

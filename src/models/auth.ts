@@ -36,3 +36,9 @@ export type AuthResponse = SuccessResponse<{
   accessToken: string
   refreshToken: string
 }>
+
+export interface GoogleLoginPayload {
+  fullName: string
+  email: string
+  avatar: string
+}
