@@ -1,16 +1,18 @@
 import { Text } from 'react-native'
 import React from 'react'
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import { LoginManager } from 'react-native-fbsdk-next'
 
 import { AppButton, Container, Row, Section } from '@/components'
 import { COLORS, FONT_FAMILIES } from '@/constants'
 import { clearAS } from '@/utils'
 import { useAuthStore } from '@/store'
-import { GoogleSignin } from '@react-native-google-signin/google-signin'
 
 export const HomeScreen = () => {
   const { setIsAuthenticated } = useAuthStore()
 
   const handleLogout = () => {
+    LoginManager.logOut()
     GoogleSignin.signOut()
     setIsAuthenticated(false)
     clearAS()

@@ -42,3 +42,9 @@ export interface GoogleLoginPayload {
   email: string
   avatar: string
 }
+
+export interface FacebookLoginPayload {
+  fullName: string
+  email: string
+  avatar: string
+}

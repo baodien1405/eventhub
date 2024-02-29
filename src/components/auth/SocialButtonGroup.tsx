@@ -2,25 +2,32 @@ import React from 'react'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import { Toast } from 'toastify-react-native'
 import { useMutation } from '@tanstack/react-query'
+import { LoginManager, Profile, Settings } from 'react-native-fbsdk-next'
 
 import { AppButton, AppText, Section, Space } from '@/components'
 import { APP, COLORS, FONT_FAMILIES } from '@/constants'
 import { FacebookSVG, GoogleSVG } from '@/assets/svg'
-import { GoogleLoginPayload } from '@/models'
+import { FacebookLoginPayload, GoogleLoginPayload } from '@/models'
 import { authApi } from '@/api'
 import { useAuthStore } from '@/store'
-import { setAccessTokenToAS } from '@/utils'
+import { getErrorMessage, setAccessTokenToAS } from '@/utils'
 
 GoogleSignin.configure({
   webClientId: APP.WEB_CLIENT_ID,
   iosClientId: APP.IOS_CLIENT_ID
 })
 
+Settings.setAppID(APP.FACEBOOK_APP_ID)
+
 export const SocialButtonGroup = () => {
   const { setIsAuthenticated } = useAuthStore()
 
   const signInWithGoogleMutation = useMutation({
     mutationFn: (payload: GoogleLoginPayload) => authApi.signInWithGoogle(payload)
+  })
+
+  const signInWithFacebookMutation = useMutation({
+    mutationFn: (payload: FacebookLoginPayload) => authApi.signInWithFacebook(payload)
   })
 
   const handleLoginGoogle = async () => {
@@ -47,6 +54,40 @@ export const SocialButtonGroup = () => {
     }
   }
 
+  const handleLoginFacebook = async () => {
+    try {
+      const result = await LoginManager.logInWithPermissions(['public_profile'])
+
+      if (result.isCancelled) {
+        Toast.error('Login cancelled!', 'top')
+        return
+      }
+
+      const profile = await Profile.getCurrentProfile()
+
+      if (profile) {
+        const payload = {
+          email: profile.email || profile.userID || '',
+          fullName: profile.name || '',
+          avatar: profile.imageURL || ''
+        }
+
+        signInWithFacebookMutation.mutate(payload, {
+          onSuccess: (data) => {
+            setIsAuthenticated(true)
+            setAccessTokenToAS(data.metadata.accessToken)
+          },
+          onError: (error) => {
+            Toast.error(error.message, 'top')
+          }
+        })
+      }
+    } catch (error) {
+      const message = getErrorMessage(error)
+      Toast.error(message, 'top')
+    }
+  }
+
   return (
     <Section styles={{ marginTop: 16 }}>
       <AppText
@@ -69,6 +110,7 @@ export const SocialButtonGroup = () => {
           fontFamily: FONT_FAMILIES.regular,
           flex: 0
         }}
+        loading={signInWithGoogleMutation.isPending}
         onPress={handleLoginGoogle}
       />
 
@@ -81,6 +123,8 @@ export const SocialButtonGroup = () => {
           fontFamily: FONT_FAMILIES.regular,
           flex: 0
         }}
+        loading={signInWithFacebookMutation.isPending}
+        onPress={handleLoginFacebook}
       />
     </Section>
   )
