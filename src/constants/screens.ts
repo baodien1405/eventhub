@@ -8,5 +8,6 @@ export const SCREENS = {
   EXPLORE_SCREEN: 'ExploreScreen',
   EVENT_SCREEN: 'EventScreen',
   MAP_SCREEN: 'MapScreen',
-  PROFILE_SCREEN: 'ProfileScreen'
+  PROFILE_SCREEN: 'ProfileScreen',
+  ADD_EVENT_SCREEN: 'AddEventScreen'
 } as const

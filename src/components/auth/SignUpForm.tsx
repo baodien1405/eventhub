@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ArrowRight, Lock, Sms, User } from 'iconsax-react-native'
+import { ArrowRight, Lock, Profile, Sms } from 'iconsax-react-native'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -35,7 +35,7 @@ export function SignUpForm({ loading, initialValues, onSubmit }: SignUpFormProps
         name="fullName"
         control={control}
         placeholder="Full name"
-        prefix={<User size={22} color={COLORS.gray} />}
+        prefix={<Profile size={22} color={COLORS.gray} />}
         allowClear
       />
 
