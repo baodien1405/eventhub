@@ -23,6 +23,7 @@ interface AppButtonProps {
   textStyles?: StyleProp<TextStyle>
   loading?: boolean
   disabled?: boolean
+  hasShadow?: boolean
   onPress?: () => void
 }
 
@@ -37,6 +38,7 @@ export const AppButton = ({
   textStyles,
   loading,
   disabled,
+  hasShadow = true,
   onPress
 }: AppButtonProps) => {
   if (type === 'primary') {
@@ -47,7 +49,7 @@ export const AppButton = ({
           disabled={loading || disabled}
           style={[
             globalStyles.button,
-            globalStyles.shadow,
+            hasShadow && globalStyles.shadow,
             {
               backgroundColor: color,
               width: '85%',
@@ -66,12 +68,12 @@ export const AppButton = ({
                 text={text}
                 color={textColor}
                 styles={[
-                  textStyles,
                   {
                     paddingLeft: prefixIcon ? 20 : 0,
                     marginLeft: suffixIcon ? 30 : 0,
                     textAlign: 'center'
-                  }
+                  },
+                  textStyles
                 ]}
                 flex={suffixIcon ? 1 : 0}
               />

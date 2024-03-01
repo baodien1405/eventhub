@@ -44,6 +44,7 @@ export const TabNavigator = () => {
           )
         }}
       />
+
       <Tab.Screen
         name="Events"
         component={EventsNavigator}
@@ -53,6 +54,7 @@ export const TabNavigator = () => {
           )
         }}
       />
+
       <Tab.Screen
         name={SCREENS.ADD_EVENT_SCREEN}
         component={AddEventScreen}
@@ -66,6 +68,7 @@ export const TabNavigator = () => {
           )
         }}
       />
+
       <Tab.Screen
         name="Map"
         component={MapNavigator}
@@ -75,6 +78,7 @@ export const TabNavigator = () => {
           )
         }}
       />
+
       <Tab.Screen
         name="Profile"
         component={ProfileNavigator}

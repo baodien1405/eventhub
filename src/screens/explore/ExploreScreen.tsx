@@ -1,27 +1,14 @@
-import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import { ArrowDown2, HambergerMenu, Notification } from 'iconsax-react-native'
 import React from 'react'
 import { Platform, StatusBar, TouchableOpacity, View } from 'react-native'
-import { LoginManager } from 'react-native-fbsdk-next'
 import { DrawerActions } from '@react-navigation/native'
 
-import { AppButton, AppText, Circle, Row } from '@/components'
+import { AppText, Circle, Row } from '@/components'
 import { COLORS, FONT_FAMILIES } from '@/constants'
-import { useAuthStore } from '@/store'
 import { globalStyles } from '@/styles'
-import { clearAS } from '@/utils'
 import { ExploreScreenProps } from '@/models'
 
 export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
-  const { setIsAuthenticated } = useAuthStore()
-
-  const handleLogout = () => {
-    LoginManager.logOut()
-    GoogleSignin.signOut()
-    setIsAuthenticated(false)
-    clearAS()
-  }
-
   return (
     <View style={[globalStyles.container]}>
       <StatusBar barStyle="light-content" />
@@ -81,19 +68,6 @@ export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
             </View>
           </Circle>
         </Row>
-      </View>
-      <View style={{ flex: 1, padding: 50 }}>
-        <AppButton
-          text="Logout"
-          textColor={COLORS.white}
-          textStyles={{
-            fontSize: 16,
-            fontFamily: FONT_FAMILIES.medium,
-            fontWeight: '400',
-            textTransform: 'uppercase'
-          }}
-          onPress={handleLogout}
-        />
       </View>
     </View>
   )
