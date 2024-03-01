@@ -92,7 +92,8 @@ const styles = StyleSheet.create({
   tabBarStyle: {
     height: Platform.OS === 'ios' ? 88 : 68,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: COLORS.white
   },
   tabBarIconStyle: {
     marginTop: 8
