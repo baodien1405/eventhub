@@ -8,7 +8,7 @@ import { COLORS, FONT_FAMILIES } from '@/constants'
 import { clearAS } from '@/utils'
 import { useAuthStore } from '@/store'
 
-export const HomeScreen = () => {
+export const ExploreScreen = () => {
   const { setIsAuthenticated } = useAuthStore()
 
   const handleLogout = () => {
@@ -22,7 +22,7 @@ export const HomeScreen = () => {
     <Container>
       <Section>
         <Row>
-          <Text>HomeScreen</Text>
+          <Text>ExploreScreen</Text>
         </Row>
 
         <AppButton

@@ -1,3 +1,7 @@
 export * from './AuthNavigator'
 export * from './TabNavigator'
 export * from './MainNavigator'
+export * from './ExploreNavigator'
+export * from './EventsNavigator'
+export * from './MapNavigator'
+export * from './ProfileNavigator'

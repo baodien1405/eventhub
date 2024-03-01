@@ -2,19 +2,19 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { SCREENS } from '@/constants'
-import { TabNavigator } from '@/navigation'
 import { RootStackParamList } from '@/models'
+import { MapScreen } from '@/screens/map'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
-export const MainNavigator = () => {
+export const MapNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false
       }}
     >
-      <Stack.Screen name={SCREENS.MAIN_SCREEN} component={TabNavigator} />
+      <Stack.Screen name={SCREENS.MAP_SCREEN} component={MapScreen} />
     </Stack.Navigator>
   )
 }

@@ -11,9 +11,9 @@ import {
   VerificationScreen
 } from '@/screens/auth'
 
-export const AuthNavigator = () => {
-  const Stack = createNativeStackNavigator<RootStackParamList>()
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
+export const AuthNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{

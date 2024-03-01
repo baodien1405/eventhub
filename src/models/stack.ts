@@ -1,13 +1,19 @@
+interface VerificationScreenParams {
+  fullName: string
+  email: string
+  password: string
+  verificationCode: string
+}
+
 export type RootStackParamList = {
   LoginScreen: undefined
   SignUpScreen: undefined
   ForgotPasswordScreen: undefined
-  VerificationScreen: {
-    fullName: string
-    email: string
-    password: string
-    verificationCode: string
-  }
+  VerificationScreen: VerificationScreenParams
   OnboardingScreen: undefined
-  HomeScreen: undefined
+  MainScreen: undefined
+  ExploreScreen: undefined
+  EventScreen: undefined
+  MapScreen: undefined
+  ProfileScreen: undefined
 }

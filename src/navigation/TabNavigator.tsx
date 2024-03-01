@@ -1,14 +1,17 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { SCREENS } from '@/constants'
-import { HomeScreen } from '@/screens/home'
+
+import { EventsNavigator, ExploreNavigator, MapNavigator, ProfileNavigator } from '@/navigation'
+
+const Tab = createBottomTabNavigator()
 
 export const TabNavigator = () => {
-  const Tab = createBottomTabNavigator()
-
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
-      <Tab.Screen name={SCREENS.HOME_SCREEN} component={HomeScreen} />
+      <Tab.Screen name="Explore" component={ExploreNavigator} />
+      <Tab.Screen name="Events" component={EventsNavigator} />
+      <Tab.Screen name="Map" component={MapNavigator} />
+      <Tab.Screen name="Profile" component={ProfileNavigator} />
     </Tab.Navigator>
   )
 }

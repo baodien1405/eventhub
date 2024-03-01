@@ -4,6 +4,9 @@ export const SCREENS = {
   FORGOT_PASSWORD_SCREEN: 'ForgotPasswordScreen',
   VERIFICATION_SCREEN: 'VerificationScreen',
   ONBOARDING_SCREEN: 'OnboardingScreen',
-  HOME_SCREEN: 'HomeScreen',
-  MAIN_SCREEN: 'MainScreen'
+  MAIN_SCREEN: 'MainScreen',
+  EXPLORE_SCREEN: 'ExploreScreen',
+  EVENT_SCREEN: 'EventScreen',
+  MAP_SCREEN: 'MapScreen',
+  PROFILE_SCREEN: 'ProfileScreen'
 } as const
