@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from '@/constants'
 import { FacebookLoginPayload } from './../models/auth'
 import {
   LoginPayload,
@@ -8,21 +9,18 @@ import {
 } from '@/models'
 import axiosClient from './axiosClient'
 
-export const URL_LOGIN = '/login'
-export const URL_SIGN_UP = '/sign-up'
-
 export const authApi = {
   register(payload: Omit<SignUpPayload, 'confirmPassword'>): Promise<AuthResponse> {
-    return axiosClient.post(URL_SIGN_UP, payload)
+    return axiosClient.post(API_ENDPOINTS.URL_SIGN_UP, payload)
   },
   login(payload: LoginPayload): Promise<AuthResponse> {
-    return axiosClient.post(URL_LOGIN, payload)
+    return axiosClient.post(API_ENDPOINTS.URL_LOGIN, payload)
   },
   signInWithGoogle(payload: GoogleLoginPayload): Promise<AuthResponse> {
-    return axiosClient.post('/google-sign-in', payload)
+    return axiosClient.post(API_ENDPOINTS.URL_SIGN_IN_GOOGLE, payload)
   },
   signInWithFacebook(payload: FacebookLoginPayload): Promise<AuthResponse> {
-    return axiosClient.post('/facebook-sign-in', payload)
+    return axiosClient.post(API_ENDPOINTS.URL_SIGN_IN_FACEBOOK, payload)
   },
   logout() {
     return axiosClient.post('/logout')

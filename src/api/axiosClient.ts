@@ -1,7 +1,13 @@
 import axios, { AxiosError } from 'axios'
-import { URL_LOGIN, URL_SIGN_UP } from '@/api'
-import { getAccessTokenFromAS, setAccessTokenToAS, setRefreshTokenToAS } from '@/utils'
+
+import {
+  getAccessTokenFromAS,
+  setAccessTokenToAS,
+  setProfileToAS,
+  setRefreshTokenToAS
+} from '@/utils'
 import { AuthResponse } from '@/models'
+import { API_ENDPOINTS } from '@/constants'
 
 const axiosClient = axios.create({
   baseURL: 'http://192.168.1.6:8018/v1/api',
@@ -31,11 +37,20 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
   (response) => {
     const { url } = response.config
-    if ([URL_LOGIN, URL_SIGN_UP].includes(url as string)) {
+    console.log('🚀 ~ url:', url)
+    if (
+      [
+        API_ENDPOINTS.URL_LOGIN,
+        API_ENDPOINTS.URL_SIGN_UP,
+        API_ENDPOINTS.URL_SIGN_IN_FACEBOOK,
+        API_ENDPOINTS.URL_SIGN_IN_GOOGLE
+      ].includes(url as string)
+    ) {
       const data = response.data as AuthResponse
 
       setAccessTokenToAS(data.metadata.accessToken)
       setRefreshTokenToAS(data.metadata.refreshToken)
+      setProfileToAS(data.metadata.user)
     }
 
     return response.data

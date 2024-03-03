@@ -21,7 +21,7 @@ import { useAuthStore } from '@/store'
 import { clearAS } from '@/utils'
 
 export const CustomDrawer = ({ navigation }: DrawerContentComponentProps) => {
-  const { setIsAuthenticated } = useAuthStore()
+  const { reset, profile } = useAuthStore()
 
   const MENU_LIST = [
     {
@@ -90,7 +90,7 @@ export const CustomDrawer = ({ navigation }: DrawerContentComponentProps) => {
       onPress: () => {
         LoginManager.logOut()
         GoogleSignin.signOut()
-        setIsAuthenticated(false)
+        reset()
         clearAS()
         navigation.closeDrawer()
       }
@@ -100,14 +100,31 @@ export const CustomDrawer = ({ navigation }: DrawerContentComponentProps) => {
   return (
     <View style={[styles.container]}>
       <View style={{ marginBottom: 28 }}>
-        <Image
-          source={{
-            uri: 'https://plus.unsplash.com/premium_photo-1706727291378-ae48117af40d?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxN3x8fGVufDB8fHx8fA%3D%3D'
-          }}
-          style={styles.avatar}
-        />
+        {profile?.avatar ? (
+          <Image source={{ uri: profile.avatar }} style={styles.avatar} />
+        ) : (
+          <View
+            style={[
+              styles.avatar,
+              {
+                backgroundColor: 'coral',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }
+            ]}
+          >
+            <AppText
+              text={profile?.fullName?.charAt(0)?.toUpperCase() || ''}
+              font={FONT_FAMILIES.bold}
+              size={25}
+              flex={0}
+            />
+          </View>
+        )}
 
-        <AppText text="Bảo Điền" size={19} font={FONT_FAMILIES.medium} flex={0} />
+        {profile?.fullName && (
+          <AppText text={profile.fullName} size={19} font={FONT_FAMILIES.medium} flex={0} />
+        )}
       </View>
 
       <View style={{ flex: 1, paddingVertical: 20 }}>

@@ -1,6 +1,5 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { RootStackParamList } from './stack'
-import { SuccessResponse } from '@/models'
+import { SuccessResponse, User, RootStackParamList } from '@/models'
 
 export type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'LoginScreen'>
 
@@ -35,6 +34,7 @@ export interface ForgotPasswordPayload {
 export type AuthResponse = SuccessResponse<{
   accessToken: string
   refreshToken: string
+  user: User
 }>
 
 export interface GoogleLoginPayload {

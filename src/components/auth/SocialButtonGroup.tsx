@@ -10,7 +10,7 @@ import { FacebookSVG, GoogleSVG } from '@/assets/svg'
 import { FacebookLoginPayload, GoogleLoginPayload } from '@/models'
 import { authApi } from '@/api'
 import { useAuthStore } from '@/store'
-import { getErrorMessage, setAccessTokenToAS } from '@/utils'
+import { getErrorMessage } from '@/utils'
 
 GoogleSignin.configure({
   webClientId: APP.WEB_CLIENT_ID,
@@ -20,7 +20,7 @@ GoogleSignin.configure({
 Settings.setAppID(APP.FACEBOOK_APP_ID)
 
 export const SocialButtonGroup = () => {
-  const { setIsAuthenticated } = useAuthStore()
+  const { setIsAuthenticated, setProfile } = useAuthStore()
 
   const signInWithGoogleMutation = useMutation({
     mutationFn: (payload: GoogleLoginPayload) => authApi.signInWithGoogle(payload)
@@ -43,7 +43,7 @@ export const SocialButtonGroup = () => {
       signInWithGoogleMutation.mutate(payload, {
         onSuccess: (data) => {
           setIsAuthenticated(true)
-          setAccessTokenToAS(data.metadata.accessToken)
+          setProfile(data.metadata.user)
         },
         onError: (error) => {
           Toast.error(error.message, 'top')
@@ -75,7 +75,7 @@ export const SocialButtonGroup = () => {
         signInWithFacebookMutation.mutate(payload, {
           onSuccess: (data) => {
             setIsAuthenticated(true)
-            setAccessTokenToAS(data.metadata.accessToken)
+            setProfile(data.metadata.user)
           },
           onError: (error) => {
             Toast.error(error.message, 'top')

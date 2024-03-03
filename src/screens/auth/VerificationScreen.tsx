@@ -26,7 +26,7 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
   const refCode2 = useRef<TextInput | null>(null)
   const refCode3 = useRef<TextInput | null>(null)
 
-  const { setIsAuthenticated } = useAuthStore()
+  const { setIsAuthenticated, setProfile } = useAuthStore()
   const { counter: timer, reset: resetTimer } = useCountDown(TIMEOUT_VERIFICATION_CODE)
 
   const sendVerificationCodeMutation = useMutation({
@@ -81,8 +81,9 @@ export const VerificationScreen = ({ route }: VerificationScreenProps) => {
       }
 
       signUpMutation.mutate(payload, {
-        onSuccess: () => {
+        onSuccess: (data) => {
           setIsAuthenticated(true)
+          setProfile(data.metadata.user)
         },
         onError: (error) => {
           Toast.error(error.message, 'top')

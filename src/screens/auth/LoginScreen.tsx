@@ -19,7 +19,7 @@ import { authApi } from '@/api'
 import { useAuthStore } from '@/store'
 
 export const LoginScreen = ({ navigation }: LoginScreenProps) => {
-  const { setIsAuthenticated } = useAuthStore()
+  const { setIsAuthenticated, setProfile } = useAuthStore()
 
   const loginMutation = useMutation({
     mutationFn: (body: LoginPayload) => authApi.login(body)
@@ -27,8 +27,9 @@ export const LoginScreen = ({ navigation }: LoginScreenProps) => {
 
   const handleLogin = (payload: LoginPayload) => {
     loginMutation.mutate(payload, {
-      onSuccess: () => {
+      onSuccess: (data) => {
         setIsAuthenticated(true)
+        setProfile(data.metadata.user)
       },
       onError: (error) => {
         Toast.error(error.message, 'top')
