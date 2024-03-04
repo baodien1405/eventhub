@@ -4,6 +4,7 @@ const textLogoImage = require('./text-logo.png')
 const onboardingFirstImage = require('./onboarding-1.png')
 const onboardingSecondImage = require('./onboarding-2.png')
 const onboardingThirdImage = require('./onboarding-3.png')
+const inviteImage = require('./invite.png')
 
 export const IMAGES = {
   logo: logoImage,
@@ -11,5 +12,6 @@ export const IMAGES = {
   splashBackground: splashBackgroundImage,
   onboardingFirst: onboardingFirstImage,
   onboardingSecond: onboardingSecondImage,
-  onboardingThird: onboardingThirdImage
+  onboardingThird: onboardingThirdImage,
+  invite: inviteImage
 }

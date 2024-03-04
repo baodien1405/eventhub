@@ -1,13 +1,31 @@
+import { DrawerActions } from '@react-navigation/native'
 import { ArrowDown2, Notification, SearchNormal1, Sort } from 'iconsax-react-native'
 import React from 'react'
-import { Platform, StatusBar, StyleSheet, TouchableOpacity, View, ScrollView } from 'react-native'
-import { DrawerActions } from '@react-navigation/native'
+import {
+  ImageBackground,
+  Platform,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+  View
+} from 'react-native'
 
-import { AppText, CategoryList, Circle, Row, Space, TabBar, Tag } from '@/components'
-import { COLORS, FONT_FAMILIES } from '@/constants'
-import { globalStyles } from '@/styles'
-import { ExploreScreenProps } from '@/models'
+import { IMAGES } from '@/assets/images'
 import { MenuSVG } from '@/assets/svg'
+import {
+  AppText,
+  CategoryList,
+  Circle,
+  Row,
+  Space,
+  TabBar,
+  Tag,
+  UpcomingEventList
+} from '@/components'
+import { APP, COLORS, FONT_FAMILIES } from '@/constants'
+import { ExploreScreenProps } from '@/models'
+import { globalStyles } from '@/styles'
 
 export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
   return (
@@ -76,8 +94,58 @@ export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
         </View>
       </View>
 
-      <ScrollView style={{ flex: 1, paddingHorizontal: 24, paddingTop: 28 }}>
+      <ScrollView
+        style={{ flex: 1, paddingHorizontal: 24, paddingTop: 28 }}
+        showsVerticalScrollIndicator={false}
+      >
         <TabBar title="Upcoming Events" onPress={() => {}} />
+
+        <View style={{ marginTop: 10, marginBottom: 14 }}>
+          <UpcomingEventList />
+        </View>
+
+        <View style={styles.invite}>
+          <ImageBackground
+            source={IMAGES.invite}
+            style={{ flex: 1, height: 127, paddingTop: 13, paddingLeft: 18 }}
+            imageStyle={{
+              resizeMode: 'cover',
+              borderRadius: 12,
+              backgroundColor: 'rgba(0, 248, 255, 0.2)'
+            }}
+          >
+            <AppText
+              text="Invite your friends"
+              size={18}
+              font={FONT_FAMILIES.medium}
+              styles={{ lineHeight: 34 }}
+              flex={0}
+            />
+            <AppText
+              text="Get $20 for ticket"
+              size={13}
+              color="#484D70"
+              flex={0}
+              styles={{ marginBottom: 13 }}
+            />
+            <TouchableOpacity style={styles.button} onPress={() => {}}>
+              <AppText
+                text="INVITE"
+                size={12}
+                color={COLORS.white}
+                font={FONT_FAMILIES.medium}
+                flex={0}
+                styles={{ lineHeight: 23 }}
+              />
+            </TouchableOpacity>
+          </ImageBackground>
+        </View>
+
+        <TabBar title="Nearby You" onPress={() => {}} />
+
+        <View style={{ marginTop: 10, marginBottom: 14 }}>
+          <UpcomingEventList />
+        </View>
       </ScrollView>
     </View>
   )
@@ -86,7 +154,7 @@ export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
 const styles = StyleSheet.create({
   content: {
     backgroundColor: '#4A43EC',
-    height: 179,
+    height: Platform.OS === 'android' ? 180 : 200,
     paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 50,
     paddingHorizontal: 24,
     borderBottomLeftRadius: 33,
@@ -123,5 +191,18 @@ const styles = StyleSheet.create({
     bottom: -6,
     left: 24,
     right: 0
+  },
+  invite: {
+    borderRadius: 12,
+    width: APP.sizes.WIDTH - 48,
+    marginBottom: 24
+  },
+  button: {
+    backgroundColor: '#00F8FF',
+    width: 72,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 5
   }
 })

@@ -74,7 +74,7 @@ export const TabNavigator = () => {
         component={MapNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Location size={23} color={focused ? COLORS.primary : COLORS.gray5} />
+            <Location variant="Bold" size={23} color={focused ? COLORS.primary : COLORS.gray5} />
           )
         }}
       />
@@ -84,7 +84,7 @@ export const TabNavigator = () => {
         component={ProfileNavigator}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Profile size={23} color={focused ? COLORS.primary : COLORS.gray5} />
+            <Profile variant="Bold" size={23} color={focused ? COLORS.primary : COLORS.gray5} />
           )
         }}
       />
