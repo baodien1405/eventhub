@@ -7,11 +7,10 @@ import {
   setRefreshTokenToAS
 } from '@/utils'
 import { AuthResponse } from '@/models'
-import { API_ENDPOINTS } from '@/constants'
+import { API_ENDPOINTS, APP } from '@/constants'
 
 const axiosClient = axios.create({
-  baseURL: 'http://192.168.1.6:8018/v1/api',
-  // baseURL: 'http://192.168.10.84:8018/v1/api',
+  baseURL: APP.API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
@@ -37,7 +36,6 @@ axiosClient.interceptors.request.use(
 axiosClient.interceptors.response.use(
   (response) => {
     const { url } = response.config
-    console.log('🚀 ~ url:', url)
     if (
       [
         API_ENDPOINTS.URL_LOGIN,

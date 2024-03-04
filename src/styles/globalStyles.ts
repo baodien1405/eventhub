@@ -13,7 +13,7 @@ export const globalStyles = StyleSheet.create({
     alignItems: 'center'
   },
   section: {
-    paddingHorizontal: 30,
+    paddingHorizontal: 28,
     paddingBottom: 20
   },
   text: {
@@ -67,5 +67,11 @@ export const globalStyles = StyleSheet.create({
     borderRadius: 10,
     width: APP.sizes.WIDTH - 32,
     backgroundColor: COLORS.white
+  },
+  tag: {
+    borderRadius: 100,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    minWidth: 75
   }
 })

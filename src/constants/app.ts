@@ -5,6 +5,8 @@ export const APP = {
     WIDTH: Dimensions.get('window').width,
     HEIGHT: Dimensions.get('window').height
   },
+  API_URL: 'http://192.168.10.84:8018/v1/api',
+  // API_URL: 'http://192.168.1.6:8018/v1/api',
   WEB_CLIENT_ID: '206699857345-hh8e4ljkjrcr4ndu84ac6d61icdu3ga0.apps.googleusercontent.com',
   IOS_CLIENT_ID: '206699857345-egijp5m6jse775pnea9ftl18tvrgn7nv.apps.googleusercontent.com',
   FACEBOOK_APP_ID: '369889125932060'
