@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { SCREENS } from '@/constants'
 import { RootStackParamList } from '@/models'
-import { EventScreen } from '@/screens/events'
+import { EventDetailsScreen, EventScreen } from '@/screens/events'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
@@ -15,6 +15,7 @@ export const EventsNavigator = () => {
       }}
     >
       <Stack.Screen name={SCREENS.EVENT_SCREEN} component={EventScreen} />
+      <Stack.Screen name={SCREENS.EVENT_DETAILS_SCREEN} component={EventDetailsScreen} />
     </Stack.Navigator>
   )
 }

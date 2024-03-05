@@ -1,15 +1,25 @@
 import React from 'react'
-import { View, StyleSheet, ImageBackground } from 'react-native'
+import { View, StyleSheet, ImageBackground, TouchableOpacity } from 'react-native'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
+import { NavigationProp, useNavigation } from '@react-navigation/native'
+import { Location } from 'iconsax-react-native'
 
 import { AppText, AvatarGroup, Row } from '@/components'
 import { globalStyles } from '@/styles'
-import { APP, COLORS, FONT_FAMILIES } from '@/constants'
-import { Location } from 'iconsax-react-native'
+import { APP, COLORS, FONT_FAMILIES, SCREENS } from '@/constants'
 
 export const EventCard = () => {
+  const navigation = useNavigation<NavigationProp<any>>()
+
   return (
-    <View style={[styles.container, globalStyles.shadow]}>
+    <TouchableOpacity
+      style={[styles.container, globalStyles.shadow]}
+      onPress={() =>
+        navigation.navigate('Events', {
+          screen: SCREENS.EVENT_DETAILS_SCREEN
+        })
+      }
+    >
       <ImageBackground
         source={{
           uri: 'https://images.unsplash.com/photo-1709377060397-14c021810ebc?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHx8'
@@ -59,7 +69,7 @@ export const EventCard = () => {
           numberOfLines={1}
         />
       </Row>
-    </View>
+    </TouchableOpacity>
   )
 }
 
