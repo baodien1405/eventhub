@@ -1,5 +1,5 @@
 import { DrawerActions } from '@react-navigation/native'
-import { ArrowDown2, Notification, SearchNormal1, Sort } from 'iconsax-react-native'
+import { Notification, SearchNormal1, Sort } from 'iconsax-react-native'
 import React from 'react'
 import {
   ImageBackground,
@@ -17,6 +17,7 @@ import {
   AppText,
   CategoryList,
   Circle,
+  CurrentLocation,
   Row,
   Space,
   TabBar,
@@ -38,24 +39,7 @@ export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
           </TouchableOpacity>
 
           <View style={{ flex: 1, alignItems: 'center' }}>
-            <Row>
-              <AppText
-                text="Current Location"
-                flex={0}
-                color={COLORS.white}
-                styles={{ opacity: 0.7 }}
-                size={12}
-              />
-              <ArrowDown2 variant="Bold" size={14} color={COLORS.white2} />
-            </Row>
-
-            <AppText
-              text="New York, USA"
-              size={13}
-              flex={0}
-              color="#F4F4FE"
-              font={FONT_FAMILIES.medium}
-            />
+            <CurrentLocation />
           </View>
 
           <Circle size={36} color="#5D56F3">
