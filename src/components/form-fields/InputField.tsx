@@ -1,11 +1,13 @@
 import React, { ReactNode, useState } from 'react'
 import {
   KeyboardTypeOptions,
+  StyleProp,
   StyleSheet,
   TextInput,
   TextInputProps,
   TouchableOpacity,
-  View
+  View,
+  ViewStyle
 } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import { Control, FieldValues, Path, useController } from 'react-hook-form'
@@ -13,7 +15,7 @@ import Entypo from 'react-native-vector-icons/Entypo'
 
 import { AppText, Row } from '@/components'
 import { globalStyles } from '@/styles'
-import { COLORS } from '@/constants'
+import { COLORS, FONT_FAMILIES } from '@/constants'
 
 type InputFieldProps<T extends FieldValues> = TextInputProps & {
   label?: string
@@ -25,6 +27,7 @@ type InputFieldProps<T extends FieldValues> = TextInputProps & {
   control: Control<T>
   keyboardType?: KeyboardTypeOptions
   isPassword?: boolean
+  inputWrapperStyle?: StyleProp<ViewStyle>
 }
 
 export function InputField<T extends FieldValues>({
@@ -39,6 +42,7 @@ export function InputField<T extends FieldValues>({
   numberOfLines,
   keyboardType,
   isPassword = false,
+  inputWrapperStyle,
   onChangeText: externalOnChangeText,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onBlur: externalOnBlur,
@@ -57,7 +61,7 @@ export function InputField<T extends FieldValues>({
   })
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, inputWrapperStyle]}>
       {label && <AppText text={label} styles={styles.label} />}
 
       <Row
@@ -110,7 +114,7 @@ export function InputField<T extends FieldValues>({
             }}
             style={{ marginTop: multiline && numberOfLines ? 10 : 0 }}
           >
-            <AntDesign name="close" size={20} color={COLORS.white} />
+            <AntDesign name="close" size={20} color={COLORS.gray4} />
           </TouchableOpacity>
         )}
 
@@ -133,7 +137,10 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   label: {
-    marginBottom: 8
+    marginBottom: 8,
+    fontSize: 16,
+    fontFamily: FONT_FAMILIES.medium,
+    lineHeight: 34
   },
   input: {
     margin: 0,

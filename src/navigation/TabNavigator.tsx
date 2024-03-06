@@ -58,15 +58,15 @@ export const TabNavigator = () => {
       <Tab.Screen
         name={SCREENS.ADD_EVENT_SCREEN}
         component={AddEventScreen}
-        options={{
+        options={({ navigation }) => ({
           tabBarButton: () => (
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => navigation.navigate(SCREENS.ADD_EVENT_SCREEN)}>
               <View style={[globalStyles.shadow, styles.addEventIconContainer]}>
                 <AddSquare size={23} color={COLORS.white} variant="Bold" />
               </View>
             </TouchableOpacity>
           )
-        }}
+        })}
       />
 
       <Tab.Screen

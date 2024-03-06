@@ -1,10 +1,11 @@
-import { View, Text } from 'react-native'
 import React from 'react'
+
+import { AddEditEventForm, Container } from '@/components'
 
 export const AddEventScreen = () => {
   return (
-    <View>
-      <Text>AddEventScreen</Text>
-    </View>
+    <Container isScroll>
+      <AddEditEventForm />
+    </Container>
   )
 }
