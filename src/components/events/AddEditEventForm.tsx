@@ -2,9 +2,19 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { ArrowRight } from 'iconsax-react-native'
 import React from 'react'
 import { useForm } from 'react-hook-form'
+import { View } from 'react-native'
 
-import { AppButton, AppText, InputField, LocationPickerField, Row, Section } from '@/components'
-import { COLORS, FONT_FAMILIES } from '@/constants'
+import {
+  AppButton,
+  AppText,
+  DatePickerField,
+  InputField,
+  LocationPickerField,
+  Row,
+  Section,
+  Space
+} from '@/components'
+import { COLORS, FONT_FAMILIES, FORMAT_TYPES } from '@/constants'
 import { useAddEditEventSchema } from '@/hooks'
 import { Event } from '@/models'
 import { globalStyles } from '@/styles'
@@ -52,6 +62,41 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
         numberOfLines={3}
         multiline
         allowClear={true}
+      />
+
+      <Row>
+        <View style={{ flex: 1 }}>
+          <DatePickerField
+            name="startAt"
+            control={control}
+            type="time"
+            label="Start at"
+            format={FORMAT_TYPES.TIME}
+            placeholder="Select time"
+          />
+        </View>
+
+        <Space width={16} />
+
+        <View style={{ flex: 1 }}>
+          <DatePickerField
+            name="endAt"
+            control={control}
+            type="time"
+            label="End at"
+            format={FORMAT_TYPES.TIME}
+            placeholder="Select time"
+          />
+        </View>
+      </Row>
+
+      <DatePickerField
+        name="date"
+        control={control}
+        type="date"
+        label="Date"
+        format={FORMAT_TYPES.DD_MMMM_YYYY}
+        placeholder="Select date"
       />
 
       <LocationPickerField label="Location" />

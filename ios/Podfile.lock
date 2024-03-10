@@ -978,6 +978,8 @@ PODS:
   - React-Mapbuffer (0.73.4):
     - glog
     - React-debug
+  - react-native-date-picker (4.4.0):
+    - React-Core
   - react-native-fbsdk-next (12.1.4):
     - React-Core
     - react-native-fbsdk-next/Core (= 12.1.4)
@@ -1236,6 +1238,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector-modern`)
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - React-Mapbuffer (from `../node_modules/react-native/ReactCommon`)
+  - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-fbsdk-next (from `../node_modules/react-native-fbsdk-next`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
   - react-native-maps (from `../node_modules/react-native-maps`)
@@ -1355,6 +1358,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/logger"
   React-Mapbuffer:
     :path: "../node_modules/react-native/ReactCommon"
+  react-native-date-picker:
+    :path: "../node_modules/react-native-date-picker"
   react-native-fbsdk-next:
     :path: "../node_modules/react-native-fbsdk-next"
   react-native-geolocation:
@@ -1475,6 +1480,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 9ac353eccf6ab54d1e0a33862ba91221d1e88460
   React-logger: 0a57b68dd2aec7ff738195f081f0520724b35dab
   React-Mapbuffer: 114be72666d7e3e317c1a36fb566cd3ad712fcc8
+  react-native-date-picker: ebcb936d72fc3bbde0dea47c6641e913523231ca
   react-native-fbsdk-next: a929da980a4ec199391da637d3d2ce22b6e7779e
   react-native-geolocation: 502286ddb098d14453cd7543f0da7d2e13d2bb7a
   react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
