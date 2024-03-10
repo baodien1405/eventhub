@@ -7,10 +7,10 @@ import {
   setRefreshTokenToAS
 } from '@/utils'
 import { AuthResponse } from '@/models'
-import { API_ENDPOINTS, APP } from '@/constants'
+import { API_ENDPOINTS } from '@/constants'
 
 const axiosClient = axios.create({
-  baseURL: APP.API_URL,
+  baseURL: process.env.API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'

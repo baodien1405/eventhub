@@ -5,7 +5,7 @@ import { useMutation } from '@tanstack/react-query'
 import { LoginManager, Profile, Settings } from 'react-native-fbsdk-next'
 
 import { AppButton, AppText, Section, Space } from '@/components'
-import { APP, COLORS, FONT_FAMILIES } from '@/constants'
+import { COLORS, FONT_FAMILIES } from '@/constants'
 import { FacebookSVG, GoogleSVG } from '@/assets/svg'
 import { FacebookLoginPayload, GoogleLoginPayload } from '@/models'
 import { authApi } from '@/api'
@@ -13,11 +13,11 @@ import { useAuthStore } from '@/store'
 import { getErrorMessage } from '@/utils'
 
 GoogleSignin.configure({
-  webClientId: APP.WEB_CLIENT_ID,
-  iosClientId: APP.IOS_CLIENT_ID
+  webClientId: process.env.WEB_CLIENT_ID,
+  iosClientId: process.env.IOS_CLIENT_ID
 })
 
-Settings.setAppID(APP.FACEBOOK_APP_ID)
+Settings.setAppID(process.env.FACEBOOK_APP_ID as string)
 
 export const SocialButtonGroup = () => {
   const { setIsAuthenticated, setProfile } = useAuthStore()
