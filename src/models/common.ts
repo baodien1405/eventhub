@@ -11,3 +11,8 @@ export interface ErrorResponse<Data> {
   statusCode: number
   metadata?: Data
 }
+
+export interface Option {
+  label: string
+  value: string
+}

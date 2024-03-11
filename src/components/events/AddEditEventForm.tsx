@@ -12,11 +12,12 @@ import {
   LocationPickerField,
   Row,
   Section,
+  SelectField,
   Space
 } from '@/components'
 import { COLORS, FONT_FAMILIES, FORMAT_TYPES } from '@/constants'
-import { useAddEditEventSchema } from '@/hooks'
-import { Event } from '@/models'
+import { useAddEditEventSchema, useUserList } from '@/hooks'
+import { Event, Option } from '@/models'
 import { globalStyles } from '@/styles'
 
 interface AddEditEventFormProps {
@@ -32,6 +33,14 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
     defaultValues: initialValues,
     resolver: yupResolver(schema)
   })
+
+  const { data } = useUserList()
+
+  const inviteUserOptions: Option[] =
+    data?.metadata.items.map((user) => ({
+      label: user.fullName,
+      value: user._id || ''
+    })) || []
 
   const handleFormSubmit = (formValues: Event) => {
     onSubmit?.(formValues)
@@ -100,6 +109,14 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
       />
 
       <LocationPickerField label="Location" />
+
+      <SelectField
+        name="inviteUsers"
+        control={control}
+        label="Invite users"
+        items={inviteUserOptions}
+        multiple
+      />
 
       <AppButton
         text="Submit"

@@ -2,12 +2,19 @@ import axios, { AxiosError } from 'axios'
 
 import {
   getAccessTokenFromAS,
+  getProfileFromAS,
   setAccessTokenToAS,
   setProfileToAS,
   setRefreshTokenToAS
 } from '@/utils'
 import { AuthResponse } from '@/models'
 import { API_ENDPOINTS } from '@/constants'
+
+const HEADER = {
+  API_KEY: 'x-api-key',
+  CLIENT_ID: 'x-client-id',
+  REFRESH_TOKEN: 'x-rtoken-id'
+}
 
 const axiosClient = axios.create({
   baseURL: process.env.API_URL,
@@ -20,9 +27,11 @@ const axiosClient = axios.create({
 axiosClient.interceptors.request.use(
   async (config) => {
     const accessToken = await getAccessTokenFromAS()
+    const profile = await getProfileFromAS()
 
     if (accessToken && config.headers) {
       config.headers.Authorization = `Bearer ${accessToken}`
+      config.headers[HEADER.CLIENT_ID] = profile?._id
       return config
     }
     return config

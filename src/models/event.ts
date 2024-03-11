@@ -4,4 +4,5 @@ export interface Event {
   startAt: Date
   endAt: Date
   date: Date
+  inviteUsers: string[]
 }
