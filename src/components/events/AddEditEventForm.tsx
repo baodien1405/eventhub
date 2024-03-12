@@ -19,24 +19,25 @@ import {
 } from '@/components'
 import { COLORS, FONT_FAMILIES, FORMAT_TYPES } from '@/constants'
 import { useAddEditEventSchema, useUserList } from '@/hooks'
-import { Event, Option } from '@/models'
+import { EventPayload, Option } from '@/models'
 import { globalStyles } from '@/styles'
+import { uploadImageToStorageFirebase } from '@/utils'
 
 interface AddEditEventFormProps {
-  initialValues?: Partial<Event>
+  initialValues?: Partial<EventPayload>
   loading?: boolean
-  onSubmit?: (payload: Partial<Event>) => void
+  onSubmit?: (payload: Partial<EventPayload>) => void
 }
 
 export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEventFormProps) {
   const schema = useAddEditEventSchema()
 
-  const { control, handleSubmit } = useForm<Partial<Event>>({
+  const { control, handleSubmit } = useForm<Partial<EventPayload>>({
     defaultValues: {
       ...initialValues,
       title: '',
       description: '',
-      thumbnail: null
+      thumbnail: initialValues?._id ? { file: null, previewUrl: initialValues.thumbnailUrl } : null
     },
     resolver: yupResolver<yup.AnyObject>(schema)
   })
@@ -49,8 +50,34 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
       value: user._id || ''
     })) || []
 
-  const handleFormSubmit = (formValues: Partial<Event>) => {
-    onSubmit?.(formValues)
+  const categoryOptions: Option[] = [
+    {
+      label: 'Sports',
+      value: 'SPORTS'
+    },
+    {
+      label: 'Music',
+      value: 'MUSIC'
+    },
+    {
+      label: 'Food',
+      value: 'FOOD'
+    },
+    {
+      label: 'Art',
+      value: 'ART'
+    }
+  ]
+
+  const handleFormSubmit = async (formValues: Partial<EventPayload>) => {
+    if (formValues.thumbnail?.file) {
+      const thumbnailUrl = await uploadImageToStorageFirebase(formValues.thumbnail?.file)
+
+      onSubmit?.({
+        ...formValues,
+        thumbnailUrl
+      })
+    }
   }
 
   return (
@@ -80,6 +107,14 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
         numberOfLines={3}
         multiline
         allowClear={true}
+      />
+
+      <SelectField
+        name="category"
+        control={control}
+        label="Category"
+        placeholder="Select a category"
+        items={categoryOptions}
       />
 
       <Row>
@@ -123,8 +158,19 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
         name="inviteUsers"
         control={control}
         label="Invite users"
+        placeholder="Select users"
         items={inviteUserOptions}
         multiple
+      />
+
+      <InputField
+        name="price"
+        label="Price"
+        control={control}
+        placeholder="Enter a price"
+        keyboardType="number-pad"
+        maxLength={10}
+        allowClear
       />
 
       <AppButton

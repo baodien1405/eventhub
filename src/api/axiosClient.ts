@@ -29,9 +29,13 @@ axiosClient.interceptors.request.use(
     const accessToken = await getAccessTokenFromAS()
     const profile = await getProfileFromAS()
 
+    if (config.headers) {
+      config.headers[HEADER.CLIENT_ID] = profile?._id
+    }
+
     if (accessToken && config.headers) {
       config.headers.Authorization = `Bearer ${accessToken}`
-      config.headers[HEADER.CLIENT_ID] = profile?._id
+
       return config
     }
     return config

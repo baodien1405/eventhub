@@ -36,6 +36,11 @@ PODS:
   - Firebase/Messaging (10.22.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 10.22.0)
+  - Firebase/Storage (10.22.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 10.22.0)
+  - FirebaseAppCheckInterop (10.22.0)
+  - FirebaseAuthInterop (10.22.0)
   - FirebaseCore (10.22.0):
     - FirebaseCoreInternal (~> 10.0)
     - GoogleUtilities/Environment (~> 7.12)
@@ -58,6 +63,12 @@ PODS:
     - GoogleUtilities/Reachability (~> 7.8)
     - GoogleUtilities/UserDefaults (~> 7.8)
     - nanopb (< 2.30911.0, >= 2.30908.0)
+  - FirebaseStorage (10.22.0):
+    - FirebaseAppCheckInterop (~> 10.0)
+    - FirebaseAuthInterop (~> 10.0)
+    - FirebaseCore (~> 10.0)
+    - FirebaseCoreExtension (~> 10.0)
+    - GTMSessionFetcher/Core (< 4.0, >= 2.1)
   - fmt (6.2.1)
   - glog (0.3.5)
   - GoogleDataTransport (9.4.1):
@@ -1182,6 +1193,10 @@ PODS:
     - FirebaseCoreExtension (= 10.22.0)
     - React-Core
     - RNFBApp
+  - RNFBStorage (19.0.1):
+    - Firebase/Storage (= 10.22.0)
+    - React-Core
+    - RNFBApp
   - RNGestureHandler (2.15.0):
     - glog
     - RCT-Folly (= 2022.05.16.00)
@@ -1279,6 +1294,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
+  - "RNFBStorage (from `../node_modules/@react-native-firebase/storage`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - "RNGoogleSignin (from `../node_modules/@react-native-google-signin/google-signin`)"
   - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
@@ -1298,11 +1314,14 @@ SPEC REPOS:
     - FBSDKLoginKit
     - FBSDKShareKit
     - Firebase
+    - FirebaseAppCheckInterop
+    - FirebaseAuthInterop
     - FirebaseCore
     - FirebaseCoreExtension
     - FirebaseCoreInternal
     - FirebaseInstallations
     - FirebaseMessaging
+    - FirebaseStorage
     - fmt
     - GoogleDataTransport
     - GoogleSignIn
@@ -1431,6 +1450,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBMessaging:
     :path: "../node_modules/@react-native-firebase/messaging"
+  RNFBStorage:
+    :path: "../node_modules/@react-native-firebase/storage"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNGoogleSignin:
@@ -1462,11 +1483,14 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: 572cca0bc6c90067ef197187697cb3b584310c52
   FBSDKShareKit: d9269157b4e9620f0bc1a461c5ead35a65cede9a
   Firebase: 797fd7297b7e1be954432743a0b3f90038e45a71
+  FirebaseAppCheckInterop: 58db3e9494751399cf3e7b7e3e705cff71099153
+  FirebaseAuthInterop: fa6a29d88cf7d5649cf6f4284918a8b7627e98a9
   FirebaseCore: 0326ec9b05fbed8f8716cddbf0e36894a13837f7
   FirebaseCoreExtension: 6394c00b887d0bebadbc7049c464aa0cbddc5d41
   FirebaseCoreInternal: bca337352024b18424a61e478460547d46c4c753
   FirebaseInstallations: 763814908793c0da14c18b3dcffdec71e29ed55e
   FirebaseMessaging: 9f71037fd9db3376a4caa54e5a3949d1027b4b6e
+  FirebaseStorage: bc7bddc743548a89cfb896843a77cf4bdde2c231
   fmt: ff9d55029c625d3757ed641535fd4a75fedc7ce9
   glog: c5d68082e772fa1c511173d6b30a9de2c05a69a2
   GoogleDataTransport: 6c09b596d841063d76d4288cc2d2f42cc36e1e2a
@@ -1528,6 +1552,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 7deab901e27d1f989a83e8be6ce91b673772c848
   RNFBApp: d0be9224f318cfd6501f1f83809453800cd04868
   RNFBMessaging: fcbca7e4158d528415b445c5c8b3ffb9027f0d27
+  RNFBStorage: db34490f7dc677f930cf4a112faaa14cb14e4748
   RNGestureHandler: 7feb85c5a30ebbcd4d5c7a851ba9e7eafb9860cb
   RNGoogleSignin: fc408799f1990a12497a32f64280c0fe353ffcc1
   RNImageCropPicker: e7ab6fb43d2fc3e84651e786ef4a080d63b0ed3d

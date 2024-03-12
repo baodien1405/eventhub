@@ -4,12 +4,12 @@ import { userApi } from '@/api'
 import { QueryKeys } from '@/constants'
 import { SuccessResponse, User } from '@/models'
 
-type UseTnxDetailsOptions = Omit<
+type UseUserListOptions = Omit<
   UseQueryOptions<SuccessResponse<{ items: User[] }>>,
   'queryKey' | 'queryFn'
 >
 
-export const useUserList = (options?: UseTnxDetailsOptions) => {
+export const useUserList = (options?: UseUserListOptions) => {
   return useQuery({
     ...options,
     queryKey: [QueryKeys.USER_LIST],

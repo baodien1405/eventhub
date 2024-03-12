@@ -123,7 +123,10 @@ const styles = StyleSheet.create({
     marginBottom: 16
   },
   label: {
-    marginBottom: 8
+    marginBottom: 8,
+    fontSize: 16,
+    fontFamily: FONT_FAMILIES.medium,
+    lineHeight: 34
   },
   row: {
     paddingVertical: 20

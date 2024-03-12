@@ -25,6 +25,7 @@ type SelectFieldProps<T extends FieldValues> = {
 export function SelectField<T extends FieldValues>({
   name,
   control,
+  placeholder,
   label,
   items,
   multiple,
@@ -111,7 +112,7 @@ export function SelectField<T extends FieldValues>({
             })}
           </Row>
         ) : (
-          <AppText text="Select members" color={COLORS.gray2} />
+          <AppText text={placeholder || ''} color={COLORS.gray2} />
         )}
 
         <ArrowDown2 size={20} color={COLORS.text} />
@@ -189,7 +190,10 @@ const styles = StyleSheet.create({
     marginBottom: 16
   },
   label: {
-    marginBottom: 8
+    marginBottom: 8,
+    fontSize: 16,
+    fontFamily: FONT_FAMILIES.medium,
+    lineHeight: 34
   },
   row: {
     justifyContent: 'space-between',
