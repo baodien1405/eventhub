@@ -3,6 +3,7 @@ import { ArrowRight } from 'iconsax-react-native'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { View } from 'react-native'
+import * as yup from 'yup'
 
 import {
   AppButton,
@@ -10,6 +11,7 @@ import {
   DatePickerField,
   InputField,
   LocationPickerField,
+  PhotoField,
   Row,
   Section,
   SelectField,
@@ -21,17 +23,22 @@ import { Event, Option } from '@/models'
 import { globalStyles } from '@/styles'
 
 interface AddEditEventFormProps {
-  initialValues?: Event
+  initialValues?: Partial<Event>
   loading?: boolean
-  onSubmit?: (payload: Event) => void
+  onSubmit?: (payload: Partial<Event>) => void
 }
 
 export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEventFormProps) {
   const schema = useAddEditEventSchema()
 
-  const { control, handleSubmit } = useForm<Event>({
-    defaultValues: initialValues,
-    resolver: yupResolver(schema)
+  const { control, handleSubmit } = useForm<Partial<Event>>({
+    defaultValues: {
+      ...initialValues,
+      title: '',
+      description: '',
+      thumbnail: null
+    },
+    resolver: yupResolver<yup.AnyObject>(schema)
   })
 
   const { data } = useUserList()
@@ -42,7 +49,7 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
       value: user._id || ''
     })) || []
 
-  const handleFormSubmit = (formValues: Event) => {
+  const handleFormSubmit = (formValues: Partial<Event>) => {
     onSubmit?.(formValues)
   }
 
@@ -54,6 +61,8 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
         font={FONT_FAMILIES.medium}
         styles={{ marginBottom: 20, textAlign: 'center' }}
       />
+
+      <PhotoField name="thumbnail" label="Thumbnail" control={control} />
 
       <InputField
         name="title"

@@ -21,6 +21,7 @@
 		564FD47077514157E25103A0 /* Pods_eventhub.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B0E4DDABCC7A4DD26E6901 /* Pods_eventhub.framework */; };
 		5A8C5E7BBA574F6886EAD90D /* AirbnbCereal_W_Bk.otf in Resources */ = {isa = PBXBuildFile; fileRef = 3C7C1D36D0D7471CACE170F5 /* AirbnbCereal_W_Bk.otf */; };
 		72424DAB731EB3B27978AE5B /* Pods_eventhub_eventhubTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F19E5139C44D1080534CE227 /* Pods_eventhub_eventhubTests.framework */; };
+		779181652BA03F3100A22F98 /* QBImagePicker.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 779181642BA03F3100A22F98 /* QBImagePicker.storyboard */; };
 		779C9B2E2B9DB3A8006EE274 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 779C9B2D2B9DB3A8006EE274 /* GoogleService-Info.plist */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		82978784252141D4AEBACAE0 /* Fontisto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6EF514C1F6CF436AA0629958 /* Fontisto.ttf */; };
@@ -79,6 +80,7 @@
 		6EF514C1F6CF436AA0629958 /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = ../assets/fonts/Fontisto.ttf; sourceTree = "<group>"; };
 		70EB9B2C20B14C179563A43D /* FontAwesome6_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome6_Solid.ttf; path = ../assets/fonts/FontAwesome6_Solid.ttf; sourceTree = "<group>"; };
 		777AE28F2B903A8500795F1F /* eventhub.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = eventhub.entitlements; path = eventhub/eventhub.entitlements; sourceTree = "<group>"; };
+		779181642BA03F3100A22F98 /* QBImagePicker.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = QBImagePicker.storyboard; path = "../node_modules/react-native-image-crop-picker/ios/QBImagePicker/QBImagePicker/QBImagePicker.storyboard"; sourceTree = "<group>"; };
 		779C9B2D2B9DB3A8006EE274 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "eventhub/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		78CD1DC0E1FC467FA4A20535 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = ../assets/fonts/Zocial.ttf; sourceTree = "<group>"; };
 		808F2108AAC74E45ADAB09F2 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = ../assets/fonts/Foundation.ttf; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				779181642BA03F3100A22F98 /* QBImagePicker.storyboard */,
 				13B07FAE1A68108700A75B9A /* eventhub */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* eventhubTests */,
@@ -332,6 +335,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				779181652BA03F3100A22F98 /* QBImagePicker.storyboard in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				FB1756D7AB6847E1A973CB50 /* AirbnbCereal_W_Bd.otf in Resources */,

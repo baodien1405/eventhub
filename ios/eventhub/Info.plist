@@ -67,6 +67,12 @@
 	<string>Tìm sự kiện đang diễn ra gần bạn</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Tìm sự kiện đang diễn ra gần bạn</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+  <string>YOUR TEXT</string>
+  <key>NSPhotoLibraryAddUsageDescription</key>
+  <string>YOUR TEXT</string>
+	<key>NSCameraUsageDescription</key>
+	<string>YOUR TEXT</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AirbnbCereal_W_Bd.otf</string>
