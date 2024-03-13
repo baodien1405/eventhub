@@ -60,6 +60,11 @@ export function InputField<T extends FieldValues>({
     control
   })
 
+  const handleChangeText = (text: string) => {
+    onChange(text)
+    externalOnChangeText?.(text)
+  }
+
   return (
     <View style={[styles.container, inputWrapperStyle]}>
       {label && <AppText text={label} styles={styles.label} />}
@@ -96,10 +101,7 @@ export function InputField<T extends FieldValues>({
             secureTextEntry={isPassword ? !showPassword : false}
             autoCapitalize="none"
             onBlur={onBlur}
-            onChangeText={(text) => {
-              onChange(text)
-              externalOnChangeText?.(text)
-            }}
+            onChangeText={(text) => handleChangeText(text)}
             {...rest}
           />
         </View>
@@ -108,10 +110,7 @@ export function InputField<T extends FieldValues>({
 
         {allowClear && value && (
           <TouchableOpacity
-            onPress={() => {
-              onChange('')
-              externalOnChangeText?.('')
-            }}
+            onPress={() => handleChangeText('')}
             style={{ marginTop: multiline && numberOfLines ? 10 : 0 }}
           >
             <AntDesign name="close" size={20} color={COLORS.gray4} />

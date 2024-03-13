@@ -1,1 +1,1 @@
-export * from './AddEventScreen'
+export * from './AddEditEventScreen'

@@ -8,7 +8,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { EventsNavigator, ExploreNavigator, MapNavigator, ProfileNavigator } from '@/navigation'
 import { COLORS, SCREENS } from '@/constants'
 import { AppText } from '@/components'
-import { AddEventScreen } from '@/screens/common'
+import { AddEditEventScreen } from '@/screens/common'
 import { globalStyles } from '@/styles'
 
 const Tab = createBottomTabNavigator()
@@ -57,7 +57,7 @@ export const TabNavigator = () => {
 
       <Tab.Screen
         name={SCREENS.ADD_EVENT_SCREEN}
-        component={AddEventScreen}
+        component={AddEditEventScreen}
         options={({ navigation }) => ({
           tabBarButton: () => (
             <TouchableOpacity onPress={() => navigation.navigate(SCREENS.ADD_EVENT_SCREEN)}>

@@ -2,23 +2,33 @@ import * as yup from 'yup'
 
 export const useAddEditEventSchema = () => {
   const schema = yup.object().shape({
-    title: yup
+    event_title: yup
       .string()
       .required('Please enter a title')
       .trim('Please enter a suffix with no leading or trailing spaces'),
-    description: yup
+    event_description: yup
       .string()
       .required('Please enter a description')
       .trim('Please enter a suffix with no leading or trailing spaces'),
-    startAt: yup.date().required('Please select a time'),
-    endAt: yup.date().required('Please select a time'),
-    date: yup.date().required('Please select a date'),
-    inviteUsers: yup
+    event_start_at: yup.date().required('Please select a time'),
+    event_end_at: yup.date().required('Please select a time'),
+    event_date: yup.date().required('Please select a date'),
+    event_invite_users: yup
       .array()
       .of(yup.string().required())
       .min(1, 'Please select at least one')
       .required('Please select an user'),
-    thumbnail: yup
+    event_category: yup.string().required('Please select a category'),
+    event_price: yup
+      .string()
+      .required('Please enter a price')
+      .test((value, context) => {
+        const MAX_PRICE = 1000
+        if (Number(value) < MAX_PRICE) return true
+
+        return context.createError({ message: `Please enter a price less than ${MAX_PRICE}.` })
+      }),
+    event_thumbnail: yup
       .object()
       .nullable()
       .test((value: any, context) => {

@@ -15,6 +15,7 @@ export type RootStackParamList = {
   ExploreScreen: undefined
   EventScreen: undefined
   EventDetailsScreen: undefined
+  AddEditEventScreen: { eventId?: string }
   MapScreen: undefined
   ProfileScreen: undefined
 }

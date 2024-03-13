@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ArrowRight } from 'iconsax-react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { View } from 'react-native'
 import * as yup from 'yup'
@@ -9,6 +9,7 @@ import {
   AppButton,
   AppText,
   DatePickerField,
+  DropdownField,
   InputField,
   LocationPickerField,
   PhotoField,
@@ -22,6 +23,7 @@ import { useAddEditEventSchema, useUserList } from '@/hooks'
 import { EventPayload, Option } from '@/models'
 import { globalStyles } from '@/styles'
 import { uploadImageToStorageFirebase } from '@/utils'
+import { useAuthStore } from '@/store'
 
 interface AddEditEventFormProps {
   initialValues?: Partial<EventPayload>
@@ -31,13 +33,18 @@ interface AddEditEventFormProps {
 
 export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEventFormProps) {
   const schema = useAddEditEventSchema()
+  const [isLoadingUpload, setIsLoadingUpload] = useState(false)
+  const { profile } = useAuthStore()
 
   const { control, handleSubmit } = useForm<Partial<EventPayload>>({
     defaultValues: {
-      ...initialValues,
-      title: '',
-      description: '',
-      thumbnail: initialValues?._id ? { file: null, previewUrl: initialValues.thumbnailUrl } : null
+      event_title: '',
+      event_description: '',
+      event_invite_users: [],
+      event_thumbnail: initialValues?._id
+        ? { file: null, previewUrl: initialValues.event_thumbnail_url }
+        : null,
+      ...initialValues
     },
     resolver: yupResolver<yup.AnyObject>(schema)
   })
@@ -53,29 +60,35 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
   const categoryOptions: Option[] = [
     {
       label: 'Sports',
-      value: 'SPORTS'
+      value: 'sports'
     },
     {
       label: 'Music',
-      value: 'MUSIC'
+      value: 'music'
     },
     {
       label: 'Food',
-      value: 'FOOD'
+      value: 'food'
     },
     {
       label: 'Art',
-      value: 'ART'
+      value: 'art'
     }
   ]
 
   const handleFormSubmit = async (formValues: Partial<EventPayload>) => {
-    if (formValues.thumbnail?.file) {
-      const thumbnailUrl = await uploadImageToStorageFirebase(formValues.thumbnail?.file)
+    if (formValues.event_thumbnail?.file) {
+      setIsLoadingUpload(true)
+      const thumbnailUrl = await uploadImageToStorageFirebase(formValues.event_thumbnail?.file)
+      setIsLoadingUpload(false)
+
+      delete formValues.event_thumbnail
 
       onSubmit?.({
         ...formValues,
-        thumbnailUrl
+        event_thumbnail_url: thumbnailUrl,
+        event_price: Number(formValues.event_price),
+        event_author_id: profile?._id
       })
     }
   }
@@ -89,10 +102,10 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
         styles={{ marginBottom: 20, textAlign: 'center' }}
       />
 
-      <PhotoField name="thumbnail" label="Thumbnail" control={control} />
+      <PhotoField name="event_thumbnail" label="Thumbnail" control={control} />
 
       <InputField
-        name="title"
+        name="event_title"
         label="Title"
         control={control}
         placeholder="Enter a title"
@@ -100,7 +113,7 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
       />
 
       <InputField
-        name="description"
+        name="event_description"
         label="Description"
         control={control}
         placeholder="Enter a title"
@@ -109,8 +122,8 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
         allowClear={true}
       />
 
-      <SelectField
-        name="category"
+      <DropdownField
+        name="event_category"
         control={control}
         label="Category"
         placeholder="Select a category"
@@ -120,7 +133,7 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
       <Row>
         <View style={{ flex: 1 }}>
           <DatePickerField
-            name="startAt"
+            name="event_start_at"
             control={control}
             type="time"
             label="Start at"
@@ -133,7 +146,7 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
 
         <View style={{ flex: 1 }}>
           <DatePickerField
-            name="endAt"
+            name="event_end_at"
             control={control}
             type="time"
             label="End at"
@@ -144,7 +157,7 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
       </Row>
 
       <DatePickerField
-        name="date"
+        name="event_date"
         control={control}
         type="date"
         label="Date"
@@ -155,7 +168,7 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
       <LocationPickerField label="Location" />
 
       <SelectField
-        name="inviteUsers"
+        name="event_invite_users"
         control={control}
         label="Invite users"
         placeholder="Select users"
@@ -164,7 +177,7 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
       />
 
       <InputField
-        name="price"
+        name="event_price"
         label="Price"
         control={control}
         placeholder="Enter a price"
@@ -174,8 +187,8 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
       />
 
       <AppButton
-        text="Submit"
-        loading={loading}
+        text={initialValues?._id ? 'Save' : 'Add'}
+        loading={loading || isLoadingUpload}
         textColor={COLORS.white}
         textStyles={{
           fontSize: 16,

@@ -1,20 +1,29 @@
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Image } from 'react-native-image-crop-picker'
+
+import { RootStackParamList } from '@/models'
+
+export type AddEditEventScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'AddEditEventScreen'
+>
 
 export interface Event {
   _id: string
-  title: string
-  description: string
-  startAt: Date
-  endAt: Date
-  date: Date
-  inviteUsers: string[]
-  thumbnailUrl: string
-  category: string
-  price: number
+  event_title: string
+  event_description: string
+  event_start_at: Date
+  event_end_at: Date
+  event_date: Date
+  event_invite_users: string[]
+  event_thumbnail_url: string
+  event_category: string
+  event_price: string | number
+  event_author_id: string
 }
 
 export interface EventPayload extends Event {
-  thumbnail: null | {
+  event_thumbnail: null | {
     file: Image | null
     previewUrl: string
   }
