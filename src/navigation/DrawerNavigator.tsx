@@ -4,10 +4,11 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 
 import { TabNavigator } from '@/navigation'
 import { CustomDrawer } from '@/components'
+import { DrawerNavigatorParamList } from '@/models'
+
+const Drawer = createDrawerNavigator<DrawerNavigatorParamList>()
 
 export const DrawerNavigator = () => {
-  const Drawer = createDrawerNavigator()
-
   return (
     <Drawer.Navigator
       screenOptions={{ headerShown: false, drawerPosition: 'left' }}

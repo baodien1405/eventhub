@@ -2,10 +2,10 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { SCREENS } from '@/constants'
-import { RootStackParamList } from '@/models'
+import { MapStackNavigatorParamList } from '@/models'
 import { MapScreen } from '@/screens/map'
 
-const Stack = createNativeStackNavigator<RootStackParamList>()
+const Stack = createNativeStackNavigator<MapStackNavigatorParamList>()
 
 export const MapNavigator = () => {
   return (

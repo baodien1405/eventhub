@@ -1,4 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { RootStackParamList } from '@/models'
+import { AuthStackNavigatorParamList } from '@/models'
 
-export type OnboardingScreenProps = NativeStackScreenProps<RootStackParamList, 'OnboardingScreen'>
+export type OnboardingScreenProps = NativeStackScreenProps<
+  AuthStackNavigatorParamList,
+  'OnboardingScreen'
+>

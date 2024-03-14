@@ -1,4 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { RootStackParamList } from '@/models'
+import { ExploreStackNavigatorParamList } from '@/models'
 
-export type ExploreScreenProps = NativeStackScreenProps<RootStackParamList, 'ExploreScreen'>
+export type ExploreScreenProps = NativeStackScreenProps<
+  ExploreStackNavigatorParamList,
+  'ExploreScreen'
+>

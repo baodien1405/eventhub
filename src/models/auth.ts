@@ -1,17 +1,17 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { SuccessResponse, User, RootStackParamList } from '@/models'
+import { SuccessResponse, User, AuthStackNavigatorParamList } from '@/models'
 
-export type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'LoginScreen'>
+export type LoginScreenProps = NativeStackScreenProps<AuthStackNavigatorParamList, 'LoginScreen'>
 
-export type SignUpScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUpScreen'>
+export type SignUpScreenProps = NativeStackScreenProps<AuthStackNavigatorParamList, 'SignUpScreen'>
 
 export type VerificationScreenProps = NativeStackScreenProps<
-  RootStackParamList,
+  AuthStackNavigatorParamList,
   'VerificationScreen'
 >
 
 export type ForgotPasswordScreenProps = NativeStackScreenProps<
-  RootStackParamList,
+  AuthStackNavigatorParamList,
   'ForgotPasswordScreen'
 >
 

@@ -2,7 +2,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import React from 'react'
 
 import { SCREENS } from '@/constants'
-import { RootStackParamList } from '@/models'
+import { AuthStackNavigatorParamList } from '@/models'
 import {
   ForgotPasswordScreen,
   LoginScreen,
@@ -11,7 +11,7 @@ import {
   VerificationScreen
 } from '@/screens/auth'
 
-const Stack = createNativeStackNavigator<RootStackParamList>()
+const Stack = createNativeStackNavigator<AuthStackNavigatorParamList>()
 
 export const AuthNavigator = () => {
   return (

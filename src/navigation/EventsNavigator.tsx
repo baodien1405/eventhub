@@ -2,10 +2,10 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { SCREENS } from '@/constants'
-import { RootStackParamList } from '@/models'
+import { EventStackNavigatorParamList } from '@/models'
 import { EventDetailsScreen, EventScreen } from '@/screens/events'
 
-const Stack = createNativeStackNavigator<RootStackParamList>()
+const Stack = createNativeStackNavigator<EventStackNavigatorParamList>()
 
 export const EventsNavigator = () => {
   return (

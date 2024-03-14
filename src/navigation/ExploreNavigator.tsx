@@ -2,10 +2,10 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import { SCREENS } from '@/constants'
-import { RootStackParamList } from '@/models'
+import { ExploreStackNavigatorParamList } from '@/models'
 import { ExploreScreen } from '@/screens/explore'
 
-const Stack = createNativeStackNavigator<RootStackParamList>()
+const Stack = createNativeStackNavigator<ExploreStackNavigatorParamList>()
 
 export const ExploreNavigator = () => {
   return (

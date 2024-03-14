@@ -10,8 +10,9 @@ import { COLORS, SCREENS } from '@/constants'
 import { AppText } from '@/components'
 import { AddEditEventScreen } from '@/screens/common'
 import { globalStyles } from '@/styles'
+import { BottomTabNavigatorParamList } from '@/models'
 
-const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator<BottomTabNavigatorParamList>()
 
 export const TabNavigator = () => {
   return (
@@ -56,11 +57,11 @@ export const TabNavigator = () => {
       />
 
       <Tab.Screen
-        name={SCREENS.ADD_EVENT_SCREEN}
+        name={SCREENS.ADD_EDIT_EVENT_SCREEN}
         component={AddEditEventScreen}
         options={({ navigation }) => ({
           tabBarButton: () => (
-            <TouchableOpacity onPress={() => navigation.navigate(SCREENS.ADD_EVENT_SCREEN)}>
+            <TouchableOpacity onPress={() => navigation.navigate(SCREENS.ADD_EDIT_EVENT_SCREEN)}>
               <View style={[globalStyles.shadow, styles.addEventIconContainer]}>
                 <AddSquare size={23} color={COLORS.white} variant="Bold" />
               </View>

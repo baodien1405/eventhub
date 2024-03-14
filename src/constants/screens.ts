@@ -10,5 +10,5 @@ export const SCREENS = {
   EVENT_DETAILS_SCREEN: 'EventDetailsScreen',
   MAP_SCREEN: 'MapScreen',
   PROFILE_SCREEN: 'ProfileScreen',
-  ADD_EVENT_SCREEN: 'AddEventScreen'
+  ADD_EDIT_EVENT_SCREEN: 'AddEditEventScreen'
 } as const

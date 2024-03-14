@@ -8,7 +8,7 @@ import { Switch } from 'react-native'
 import { AppButton, AppText, InputField, Row, Section } from '@/components'
 import { COLORS, FONT_FAMILIES, SCREENS } from '@/constants'
 import { useAuthSchema } from '@/hooks'
-import { LoginPayload, RootStackParamList } from '@/models'
+import { LoginPayload, AuthStackNavigatorParamList } from '@/models'
 import { globalStyles } from '@/styles'
 
 interface LoginFormProps {
@@ -19,7 +19,7 @@ interface LoginFormProps {
 
 export function LoginForm({ initialValues, loading, onSubmit }: LoginFormProps) {
   const schema = useAuthSchema()
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>()
+  const navigation = useNavigation<NavigationProp<AuthStackNavigatorParamList>>()
   const [isRememberMe, setIsRememberMe] = useState(false)
 
   const { control, handleSubmit } = useForm<LoginPayload>({
