@@ -9,8 +9,8 @@ type UseEventOptions = Omit<UseQueryOptions<SuccessResponse<Event>>, 'queryKey' 
 export const useEventDetails = (eventId: string, options?: UseEventOptions) => {
   return useQuery({
     ...options,
-    queryKey: [QueryKeys.EVENT_DETAILS],
+    queryKey: [QueryKeys.EVENT_DETAILS, eventId],
     queryFn: () => eventApi.get(eventId),
-    enabled: !!eventId
+    enabled: Boolean(eventId)
   })
 }

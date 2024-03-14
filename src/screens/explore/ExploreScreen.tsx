@@ -22,7 +22,7 @@ import {
   Space,
   TabBar,
   Tag,
-  UpcomingEventList
+  EventList
 } from '@/components'
 import { APP, COLORS, FONT_FAMILIES } from '@/constants'
 import { ExploreScreenProps } from '@/models'
@@ -85,7 +85,7 @@ export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
         <TabBar title="Upcoming Events" onPress={() => {}} />
 
         <View style={{ marginTop: 10, marginBottom: 14 }}>
-          <UpcomingEventList />
+          <EventList />
         </View>
 
         <View style={styles.invite}>
@@ -128,7 +128,7 @@ export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
         <TabBar title="Nearby You" onPress={() => {}} />
 
         <View style={{ marginTop: 10, marginBottom: 14 }}>
-          <UpcomingEventList />
+          <EventList />
         </View>
       </ScrollView>
     </View>

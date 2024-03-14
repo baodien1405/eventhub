@@ -3,12 +3,18 @@ import { View, StyleSheet, ImageBackground, TouchableOpacity } from 'react-nativ
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { Location } from 'iconsax-react-native'
+import dayjs from 'dayjs'
 
 import { AppText, AvatarGroup, Row } from '@/components'
 import { globalStyles } from '@/styles'
 import { APP, COLORS, FONT_FAMILIES, SCREENS } from '@/constants'
+import { Event } from '@/models'
 
-export const EventCard = () => {
+interface EventCardProps {
+  event: Event
+}
+
+export const EventCard = ({ event }: EventCardProps) => {
   const navigation = useNavigation<NavigationProp<any>>()
 
   return (
@@ -16,27 +22,30 @@ export const EventCard = () => {
       style={[styles.container, globalStyles.shadow]}
       onPress={() =>
         navigation.navigate('Events', {
-          screen: SCREENS.EVENT_DETAILS_SCREEN
+          screen: SCREENS.EVENT_DETAILS_SCREEN,
+          params: {
+            eventId: event._id
+          }
         })
       }
     >
       <ImageBackground
         source={{
-          uri: 'https://images.unsplash.com/photo-1709377060397-14c021810ebc?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0fHx8ZW58MHx8fHx8'
+          uri: event.event_thumbnail_url
         }}
         style={{ flex: 1, height: 130, marginBottom: 12 }}
         imageStyle={{ flex: 1, borderRadius: 18 }}
       >
         <View style={styles.eventDate}>
           <AppText
-            text="10"
+            text={dayjs(event.event_date).format('DD')}
             size={18}
             font={FONT_FAMILIES.bold}
             color={COLORS.error}
             styles={{ marginTop: 4 }}
           />
           <AppText
-            text="June"
+            text={dayjs(event.event_date).format('MMMM')}
             size={10}
             color={COLORS.error}
             font={FONT_FAMILIES.medium}
@@ -50,7 +59,7 @@ export const EventCard = () => {
       </ImageBackground>
 
       <AppText
-        text="International Band Mu..."
+        text={event.event_title}
         size={18}
         color="#000"
         numberOfLines={1}

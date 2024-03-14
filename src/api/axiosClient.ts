@@ -26,6 +26,7 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   async (config) => {
+    console.log('🚀 ~ config:', config.baseURL)
     const accessToken = await getAccessTokenFromAS()
     const profile = await getProfileFromAS()
 
