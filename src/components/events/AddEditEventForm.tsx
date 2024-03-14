@@ -32,9 +32,10 @@ interface AddEditEventFormProps {
 }
 
 export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEventFormProps) {
-  const schema = useAddEditEventSchema()
+  const schema = useAddEditEventSchema({ initialValues })
   const [isLoadingUpload, setIsLoadingUpload] = useState(false)
   const { profile } = useAuthStore()
+  const { data } = useUserList()
 
   const { control, handleSubmit } = useForm<Partial<EventPayload>>({
     defaultValues: {
@@ -48,8 +49,6 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
     },
     resolver: yupResolver<yup.AnyObject>(schema)
   })
-
-  const { data } = useUserList()
 
   const inviteUserOptions: Option[] =
     data?.metadata.items.map((user) => ({
@@ -82,21 +81,20 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
       const thumbnailUrl = await uploadImageToStorageFirebase(formValues.event_thumbnail?.file)
       setIsLoadingUpload(false)
 
-      delete formValues.event_thumbnail
+      formValues.event_thumbnail_url = thumbnailUrl
+      formValues.event_price = Number(formValues.event_price)
+      formValues.event_author_id = profile?._id
 
-      onSubmit?.({
-        ...formValues,
-        event_thumbnail_url: thumbnailUrl,
-        event_price: Number(formValues.event_price),
-        event_author_id: profile?._id
-      })
+      delete formValues.event_thumbnail
     }
+
+    onSubmit?.(formValues)
   }
 
   return (
     <Section>
       <AppText
-        text="Add new event"
+        text={initialValues?._id ? `Edit event ${initialValues._id}` : 'Add new event'}
         size={24}
         font={FONT_FAMILIES.medium}
         styles={{ marginBottom: 20, textAlign: 'center' }}

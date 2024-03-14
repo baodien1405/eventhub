@@ -9,22 +9,34 @@ import {
 import React from 'react'
 import { ArrowLeft, ArrowRight } from 'iconsax-react-native'
 import LinearGradient from 'react-native-linear-gradient'
-import { useNavigation } from '@react-navigation/native'
-
-import { IMAGES } from '@/assets/images'
-import { APP, COLORS, FONT_FAMILIES } from '@/constants'
-import { AppButton, AppText, AvatarGroup, Row, Section } from '@/components'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
+import dayjs from 'dayjs'
+
+import { APP, COLORS, FONT_FAMILIES, FORMAT_TYPES } from '@/constants'
+import { AppButton, AppText, AvatarGroup, LoadingModal, Row, Section } from '@/components'
 import { EventCalendarSVG, EventLocationSVG } from '@/assets/svg'
 import { globalStyles } from '@/styles'
+import { EventDetailsScreenProps } from '@/models'
+import { useEventDetails } from '@/hooks'
 
-export const EventDetailsScreen = () => {
-  const navigation = useNavigation()
+export const EventDetailsScreen = ({ navigation, route }: EventDetailsScreenProps) => {
+  const eventId = route.params.eventId
+  const { data, isLoading, isError } = useEventDetails(eventId)
+
+  if (isLoading) {
+    return <LoadingModal visible={isLoading} />
+  }
+
+  if (isError) {
+    return <AppText text="Error fetching event details." />
+  }
 
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground
-        source={IMAGES.coverEventDetails}
+        source={{
+          uri: data?.metadata.event_thumbnail_url
+        }}
         style={{ height: 244, zIndex: 100 }}
         imageStyle={{ resizeMode: 'cover' }}
       >
@@ -73,11 +85,7 @@ export const EventDetailsScreen = () => {
 
       <ScrollView style={{ flex: 1, backgroundColor: COLORS.white }}>
         <Section styles={{ paddingHorizontal: 24, paddingTop: 50 }}>
-          <AppText
-            text="International Band Music Concert"
-            size={35}
-            styles={{ marginBottom: 18 }}
-          />
+          <AppText text={data?.metadata.event_title} size={35} styles={{ marginBottom: 18 }} />
 
           <Row justify="flex-start" styles={{ marginBottom: 16 }}>
             <View style={styles.iconContainer}>
@@ -85,7 +93,11 @@ export const EventDetailsScreen = () => {
             </View>
 
             <View style={{ flex: 1, marginLeft: 14 }}>
-              <AppText text="14 December, 2021" size={16} font={FONT_FAMILIES.medium} />
+              <AppText
+                text={dayjs(data?.metadata.event_date).format(FORMAT_TYPES.DD_MMMM_YYYY)}
+                size={16}
+                font={FONT_FAMILIES.medium}
+              />
 
               <AppText text="Tuesday, 4:00PM - 9:00PM" size={12} />
             </View>
@@ -145,7 +157,7 @@ export const EventDetailsScreen = () => {
           />
 
           <AppText
-            text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis tempore repellat sint modi culpa officiis facere voluptatem expedita iure, et pariatur asperiores neque. Quam pariatur dicta nulla reiciendis aspernatur quia et pariatur asperiores neque. Quam pariatur dicta nulla reiciendis aspernatur quia."
+            text={data?.metadata.event_description}
             size={15}
             font={FONT_FAMILIES.regular}
             styles={{ lineHeight: 25 }}
@@ -163,7 +175,7 @@ export const EventDetailsScreen = () => {
       >
         <LinearGradient colors={['rgba(256, 256, 256, 0.75)', 'rgba(256, 256, 256, 1)']}>
           <AppButton
-            text="Buy Ticket $120"
+            text={`Buy Ticket $${data?.metadata.event_price}`}
             loading={false}
             textColor={COLORS.white}
             textStyles={{

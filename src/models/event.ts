@@ -1,11 +1,11 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Image } from 'react-native-image-crop-picker'
 
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { EventStackNavigatorParamList } from '@/models'
 
-export type AddEditEventScreenProps = NativeStackScreenProps<
+export type EventDetailsScreenProps = NativeStackScreenProps<
   EventStackNavigatorParamList,
-  'AddEditEventScreen'
+  'EventDetailsScreen'
 >
 
 export interface Event {

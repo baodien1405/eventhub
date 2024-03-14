@@ -1,6 +1,11 @@
+import { EventPayload } from '@/models'
 import * as yup from 'yup'
 
-export const useAddEditEventSchema = () => {
+interface UseAddEditEventSchemaProps {
+  initialValues?: Partial<EventPayload>
+}
+
+export const useAddEditEventSchema = ({ initialValues }: UseAddEditEventSchemaProps) => {
   const schema = yup.object().shape({
     event_title: yup
       .string()
@@ -32,7 +37,7 @@ export const useAddEditEventSchema = () => {
       .object()
       .nullable()
       .test((value: any, context) => {
-        if (value?.file) return true
+        if (initialValues?._id || value?.file) return true
 
         return context.createError({ message: 'Please select an image.' })
       })

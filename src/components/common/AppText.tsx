@@ -4,7 +4,7 @@ import React from 'react'
 import { StyleProp, Text, TextStyle } from 'react-native'
 
 interface AppTextProps {
-  text: string
+  text?: string
   size?: number
   font?: string
   color?: string
@@ -15,7 +15,7 @@ interface AppTextProps {
 }
 
 export const AppText = ({
-  text,
+  text = '',
   size = 14,
   font = FONT_FAMILIES.regular,
   color = COLORS.text,

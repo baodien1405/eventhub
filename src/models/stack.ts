@@ -23,8 +23,7 @@ export type ExploreStackNavigatorParamList = {
 
 export type EventStackNavigatorParamList = {
   EventScreen: undefined
-  EventDetailsScreen: undefined
-  AddEditEventScreen: { eventId?: string }
+  EventDetailsScreen: { eventId: string }
 }
 
 export type MapStackNavigatorParamList = {
