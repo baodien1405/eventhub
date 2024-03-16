@@ -7,12 +7,12 @@ import {
   Image
 } from 'react-native'
 import React from 'react'
-import { ArrowLeft, ArrowRight } from 'iconsax-react-native'
+import { ArrowLeft, ArrowRight, Edit2 } from 'iconsax-react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import dayjs from 'dayjs'
 
-import { APP, COLORS, FONT_FAMILIES, FORMAT_TYPES } from '@/constants'
+import { APP, COLORS, FONT_FAMILIES, FORMAT_TYPES, SCREENS } from '@/constants'
 import { AppButton, AppText, AvatarGroup, LoadingModal, Row, Section } from '@/components'
 import { EventCalendarSVG, EventLocationSVG } from '@/assets/svg'
 import { globalStyles } from '@/styles'
@@ -85,7 +85,25 @@ export const EventDetailsScreen = ({ navigation, route }: EventDetailsScreenProp
 
       <ScrollView style={{ flex: 1, backgroundColor: COLORS.white }}>
         <Section styles={{ paddingHorizontal: 24, paddingTop: 50 }}>
-          <AppText text={data?.metadata.event_title} size={35} styles={{ marginBottom: 18 }} />
+          <Row justify="space-between" styles={{ alignItems: 'flex-start' }}>
+            <AppText
+              text={data?.metadata.event_title}
+              size={35}
+              styles={{ marginBottom: 18, marginRight: 4 }}
+              numberOfLines={3}
+            />
+
+            <TouchableOpacity
+              style={styles.editContainer}
+              onPress={() =>
+                (navigation as any).navigate(SCREENS.ADD_EDIT_EVENT_SCREEN, {
+                  eventId: eventId
+                })
+              }
+            >
+              <Edit2 size={16} color={COLORS.primary} />
+            </TouchableOpacity>
+          </Row>
 
           <Row justify="flex-start" styles={{ marginBottom: 16 }}>
             <View style={styles.iconContainer}>
@@ -234,5 +252,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(86, 105, 255, 0.1)',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  editContainer: {
+    height: 30,
+    width: 30,
+    borderRadius: 100,
+    backgroundColor: 'rgba(86, 105, 255, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 10
   }
 })

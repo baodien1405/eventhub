@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ArrowRight } from 'iconsax-react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { View } from 'react-native'
 import * as yup from 'yup'
@@ -26,18 +26,24 @@ import { uploadImageToStorageFirebase } from '@/utils'
 import { useAuthStore } from '@/store'
 
 interface AddEditEventFormProps {
+  isAddSuccess?: boolean
   initialValues?: Partial<EventPayload>
   loading?: boolean
   onSubmit?: (payload: Partial<EventPayload>) => void
 }
 
-export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEventFormProps) {
+export function AddEditEventForm({
+  isAddSuccess,
+  initialValues,
+  loading,
+  onSubmit
+}: AddEditEventFormProps) {
   const schema = useAddEditEventSchema({ initialValues })
   const [isLoadingUpload, setIsLoadingUpload] = useState(false)
   const { profile } = useAuthStore()
   const { data } = useUserList()
 
-  const { control, handleSubmit } = useForm<Partial<EventPayload>>({
+  const { control, handleSubmit, reset } = useForm<Partial<EventPayload>>({
     defaultValues: {
       event_title: '',
       event_description: '',
@@ -45,10 +51,17 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
       event_thumbnail: initialValues?._id
         ? { file: null, previewUrl: initialValues.event_thumbnail_url }
         : null,
-      ...initialValues
+      ...initialValues,
+      event_price: initialValues?.event_price ? String(initialValues.event_price) : ''
     },
     resolver: yupResolver<yup.AnyObject>(schema)
   })
+
+  useEffect(() => {
+    if (isAddSuccess) {
+      reset()
+    }
+  }, [isAddSuccess, reset])
 
   const inviteUserOptions: Option[] =
     data?.metadata.items.map((user) => ({
@@ -94,7 +107,7 @@ export function AddEditEventForm({ initialValues, loading, onSubmit }: AddEditEv
   return (
     <Section>
       <AppText
-        text={initialValues?._id ? `Edit event ${initialValues._id}` : 'Add new event'}
+        text={initialValues?._id ? `Edit event #${initialValues._id}` : 'Add new event'}
         size={24}
         font={FONT_FAMILIES.medium}
         styles={{ marginBottom: 20, textAlign: 'center' }}
