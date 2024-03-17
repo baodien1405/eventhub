@@ -117,7 +117,12 @@ export const EventDetailsScreen = ({ navigation, route }: EventDetailsScreenProp
                 font={FONT_FAMILIES.medium}
               />
 
-              <AppText text="Tuesday, 4:00PM - 9:00PM" size={12} />
+              <AppText
+                text={`${dayjs(data?.metadata.event_date).format(FORMAT_TYPES.dddd)}, ${dayjs(
+                  data?.metadata.event_start_at
+                ).format('h:mm A')} - ${dayjs(data?.metadata.event_end_at).format('h:mm A')}`}
+                size={12}
+              />
             </View>
           </Row>
 
@@ -135,21 +140,42 @@ export const EventDetailsScreen = ({ navigation, route }: EventDetailsScreenProp
 
           <Row justify="space-between" styles={{ marginBottom: 24 }}>
             <Row styles={{ flex: 1 }} justify="flex-start">
-              <Image
-                source={{
-                  uri: 'https://images.unsplash.com/photo-1527980965255-d3b416303d12?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8YXZhdGFyfGVufDB8fDB8fHww'
-                }}
-                resizeMode="cover"
-                style={{
-                  width: 48,
-                  height: 48,
-                  borderRadius: 12
-                }}
-              />
+              {data?.metadata.event_author.avatar ? (
+                <Image
+                  source={{
+                    uri: data?.metadata.event_author.avatar
+                  }}
+                  resizeMode="cover"
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 12
+                  }}
+                />
+              ) : (
+                <View
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 12,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: COLORS.gray2
+                  }}
+                >
+                  <AppText
+                    flex={0}
+                    text={data?.metadata.event_author.fullName.charAt(0)}
+                    font={FONT_FAMILIES.medium}
+                    size={18}
+                    color={COLORS.white}
+                  />
+                </View>
+              )}
 
               <View style={{ marginLeft: 14 }}>
-                <AppText text="Ashfak Sayem" size={15} />
-                <AppText text="Tuesday, 4:00PM - 9:00PM" size={12} />
+                <AppText text={data?.metadata.event_author.fullName} size={15} />
+                <AppText text="Organizer" size={12} />
               </View>
             </Row>
 

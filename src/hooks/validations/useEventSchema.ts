@@ -1,11 +1,11 @@
 import { EventPayload } from '@/models'
 import * as yup from 'yup'
 
-interface UseAddEditEventSchemaProps {
+interface UseEventSchemaProps {
   initialValues?: Partial<EventPayload>
 }
 
-export const useAddEditEventSchema = ({ initialValues }: UseAddEditEventSchemaProps) => {
+export const useEventSchema = ({ initialValues }: UseEventSchemaProps) => {
   const schema = yup.object().shape({
     event_title: yup
       .string()

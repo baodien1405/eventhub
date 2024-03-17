@@ -19,28 +19,21 @@ import {
   Space
 } from '@/components'
 import { COLORS, FONT_FAMILIES, FORMAT_TYPES } from '@/constants'
-import { useAddEditEventSchema, useUserList } from '@/hooks'
+import { useEventSchema, useUserList } from '@/hooks'
 import { EventPayload, Option } from '@/models'
 import { globalStyles } from '@/styles'
 import { uploadImageToStorageFirebase } from '@/utils'
-import { useAuthStore } from '@/store'
 
-interface AddEditEventFormProps {
+interface EventFormProps {
   isAddSuccess?: boolean
   initialValues?: Partial<EventPayload>
   loading?: boolean
   onSubmit?: (payload: Partial<EventPayload>) => void
 }
 
-export function AddEditEventForm({
-  isAddSuccess,
-  initialValues,
-  loading,
-  onSubmit
-}: AddEditEventFormProps) {
-  const schema = useAddEditEventSchema({ initialValues })
+export function EventForm({ isAddSuccess, initialValues, loading, onSubmit }: EventFormProps) {
+  const schema = useEventSchema({ initialValues })
   const [isLoadingUpload, setIsLoadingUpload] = useState(false)
-  const { profile } = useAuthStore()
   const { data } = useUserList()
 
   const { control, handleSubmit, reset } = useForm<Partial<EventPayload>>({
@@ -96,7 +89,6 @@ export function AddEditEventForm({
 
       formValues.event_thumbnail_url = thumbnailUrl
       formValues.event_price = Number(formValues.event_price)
-      formValues.event_author_id = profile?._id
 
       delete formValues.event_thumbnail
     }

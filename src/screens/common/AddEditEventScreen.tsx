@@ -1,11 +1,11 @@
 import React from 'react'
 import { Toast } from 'toastify-react-native'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import { AddEditEventForm, Container } from '@/components'
+import { EventForm, Container } from '@/components'
 import { Event, EventPayload } from '@/models'
 import { eventApi } from '@/api'
-import { SCREENS } from '@/constants'
+import { QueryKeys, SCREENS } from '@/constants'
 import { useEventDetails } from '@/hooks'
 
 export const AddEditEventScreen = ({ navigation, route }: any) => {
@@ -13,6 +13,7 @@ export const AddEditEventScreen = ({ navigation, route }: any) => {
   const isAddMode = !eventId
 
   const { data: eventDetailsData, refetch } = useEventDetails(eventId)
+  const queryClient = useQueryClient()
 
   const addEventMutation = useMutation({
     mutationFn: (body: Partial<Event>) => eventApi.add(body)
@@ -32,6 +33,10 @@ export const AddEditEventScreen = ({ navigation, route }: any) => {
               eventId: data.metadata._id
             }
           })
+          queryClient.invalidateQueries({
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey.includes(QueryKeys.EVENT_LIST)
+          })
         },
         onError: (error) => {
           Toast.error(error.message, 'top')
@@ -47,6 +52,10 @@ export const AddEditEventScreen = ({ navigation, route }: any) => {
             }
           })
           refetch()
+          queryClient.invalidateQueries({
+            predicate: (query) =>
+              Array.isArray(query.queryKey) && query.queryKey.includes(QueryKeys.EVENT_LIST)
+          })
         },
         onError: (error) => {
           Toast.error(error.message, 'top')
@@ -58,7 +67,7 @@ export const AddEditEventScreen = ({ navigation, route }: any) => {
   return (
     <Container isScroll isImageBackground>
       {(isAddMode || Boolean(eventDetailsData?.metadata)) && (
-        <AddEditEventForm
+        <EventForm
           initialValues={eventDetailsData?.metadata}
           key={route.params?.eventId}
           loading={addEventMutation.isPending || updateEventMutation.isPending}

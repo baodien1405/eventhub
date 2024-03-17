@@ -1,2 +1,2 @@
 export * from './useAuthSchema'
-export * from './useAddEditEventSchema'
+export * from './useEventSchema'

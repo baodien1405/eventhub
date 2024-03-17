@@ -1,2 +1,2 @@
 export * from './EventCard'
-export * from './AddEditEventForm'
+export * from './EventForm'
