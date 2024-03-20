@@ -1,5 +1,6 @@
-import { EventPayload } from '@/models'
 import * as yup from 'yup'
+
+import { EventPayload } from '@/models'
 
 interface UseEventSchemaProps {
   initialValues?: Partial<EventPayload>
