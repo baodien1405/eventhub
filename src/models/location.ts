@@ -31,3 +31,7 @@ interface Position {
   lat: number
   lng: number
 }
+
+export interface LocationPayload {
+  search: string
+}

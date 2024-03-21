@@ -1,10 +1,8 @@
 import React from 'react'
 import { Modal, View } from 'react-native'
-import { useForm } from 'react-hook-form'
-import { SearchNormal1 } from 'iconsax-react-native'
 
-import { AppButton, InputField, Row } from '@/components'
-import { COLORS } from '@/constants'
+import { LocationFilters } from '@/components'
+import { LocationPayload } from '@/models'
 
 interface LocationModalProps {
   visible: boolean
@@ -13,7 +11,9 @@ interface LocationModalProps {
 }
 
 export const LocationModal = ({ visible, onClose }: LocationModalProps) => {
-  const { control } = useForm()
+  const handleFiltersChange = (payload: LocationPayload) => {
+    console.log('🚀 ~ LocationModal ~ payload:', payload)
+  }
 
   return (
     <Modal visible={visible} style={{ flex: 1 }} animationType="fade">
@@ -23,19 +23,7 @@ export const LocationModal = ({ visible, onClose }: LocationModalProps) => {
           paddingVertical: 52
         }}
       >
-        <Row>
-          <View style={{ flex: 1, marginRight: 12 }}>
-            <InputField
-              name="search"
-              control={control}
-              placeholder="Search"
-              prefix={<SearchNormal1 variant="TwoTone" size={24} color={COLORS.gray} />}
-              allowClear
-              inputWrapperStyle={{ marginBottom: 0 }}
-            />
-          </View>
-          <AppButton text="Cancel" type="link" onPress={onClose} />
-        </Row>
+        <LocationFilters onSubmit={handleFiltersChange} onClose={onClose} />
       </View>
     </Modal>
   )
