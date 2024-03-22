@@ -27,4 +27,5 @@ export interface EventPayload extends Event {
     file: Image | null
     previewUrl: string
   }
+  location: any
 }

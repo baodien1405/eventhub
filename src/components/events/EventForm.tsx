@@ -168,7 +168,12 @@ export function EventForm({ isAddSuccess, initialValues, loading, onSubmit }: Ev
         placeholder="Select date"
       />
 
-      <LocationPickerField label="Location" />
+      <LocationPickerField
+        label="Location"
+        placeholder="Select an address"
+        name="location"
+        control={control}
+      />
 
       <SelectField
         name="event_invite_users"
