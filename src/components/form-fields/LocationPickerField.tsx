@@ -73,7 +73,12 @@ export function LocationPickerField<T extends FieldValues>({
           </View>
 
           {value ? (
-            <AppText text={value} color={COLORS.text4} styles={{ marginLeft: 18 }} />
+            <AppText
+              text={value}
+              color={COLORS.text4}
+              styles={{ marginLeft: 18 }}
+              numberOfLines={1}
+            />
           ) : (
             <AppText text={placeholder} color={COLORS.gray4} styles={{ marginLeft: 18 }} />
           )}

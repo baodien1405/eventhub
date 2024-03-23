@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import debounce from 'lodash.debounce'
 import { View } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { SearchNormal1 } from 'iconsax-react-native'
 
 import { AppButton, InputField, Row } from '@/components'
@@ -9,12 +9,19 @@ import { COLORS } from '@/constants'
 import { LocationPayload } from '@/models'
 
 interface LocationFiltersProps {
+  address?: string
   onClose?: () => void
   onSubmit?: (payload: LocationPayload) => void
 }
 
-export const LocationFilters = ({ onClose, onSubmit }: LocationFiltersProps) => {
-  const { control, handleSubmit } = useForm<LocationPayload>()
+export const LocationFilters = ({ address, onClose, onSubmit }: LocationFiltersProps) => {
+  const { control, handleSubmit, setValue } = useForm<LocationPayload>()
+
+  useEffect(() => {
+    if (address) {
+      setValue('search', address)
+    }
+  }, [address, setValue])
 
   const handleFiltersSubmit = (formValues: LocationPayload) => {
     onSubmit?.(formValues)

@@ -30,7 +30,7 @@ export const LocationMapView = ({ address }: LocationMapViewProps) => {
           })
         }
       })
-      .catch((error) => console.error(error))
+      .catch((error) => Toast.error(error.message, 'top'))
   }, [address])
 
   useEffect(() => {

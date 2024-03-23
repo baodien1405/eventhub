@@ -47,7 +47,11 @@ export const LocationModal = ({ visible, onSelect, onClose }: LocationModalProps
     <Modal visible={visible} style={{ flex: 1 }} animationType="fade">
       <View style={styles.modalContent}>
         <View style={styles.modalTop}>
-          <LocationFilters onSubmit={handleFiltersChange} onClose={onClose} />
+          <LocationFilters
+            address={selectedAddress}
+            onSubmit={handleFiltersChange}
+            onClose={onClose}
+          />
 
           {locationList.length > 0 && (
             <View style={styles.wrapperList}>
