@@ -132,9 +132,13 @@ export const EventDetailsScreen = ({ navigation, route }: EventDetailsScreenProp
             </View>
 
             <View style={{ flex: 1, marginLeft: 14 }}>
-              <AppText text="14 December, 2021" size={16} font={FONT_FAMILIES.medium} />
+              <AppText
+                text={data?.metadata.event_location_name}
+                size={16}
+                font={FONT_FAMILIES.medium}
+              />
 
-              <AppText text="Tuesday, 4:00PM - 9:00PM" size={12} />
+              <AppText text={data?.metadata.event_address} size={12} numberOfLines={1} />
             </View>
           </Row>
 
