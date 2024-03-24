@@ -1,23 +1,30 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Modal, StyleSheet, View } from 'react-native'
 import { Toast } from 'toastify-react-native'
+import Geocoder from 'react-native-geocoding'
 
 import { locationApi } from '@/api'
 import { AppButton, LocationFilters, LocationList, LocationMapView } from '@/components'
-import { LocationPayload } from '@/models'
+import { EventLocation, LocationPayload, Position } from '@/models'
 import { getErrorMessage } from '@/utils'
 import { COLORS, FONT_FAMILIES } from '@/constants'
 
 interface LocationModalProps {
   visible: boolean
   onClose?: () => void
-  onSelect?: (address: string) => void
+  onSelect?: (location: EventLocation) => void
 }
+
+Geocoder.init(process.env.API_KEY_GOOGLE_MAP as string)
 
 export const LocationModal = ({ visible, onSelect, onClose }: LocationModalProps) => {
   const [locationList, setLocationList] = useState<any[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [selectedAddress, setSelectedAddress] = useState('')
+  const [currentLocation, setCurrentLocation] = useState<Position>({
+    lat: 0,
+    lng: 0
+  })
 
   const handleFiltersChange = async (payload: LocationPayload) => {
     try {
@@ -43,6 +50,21 @@ export const LocationModal = ({ visible, onSelect, onClose }: LocationModalProps
     setLocationList([])
   }
 
+  const handleMapPress = useCallback(async ({ lat, lng }: Position) => {
+    setCurrentLocation({
+      lat,
+      lng
+    })
+
+    try {
+      const response = await locationApi.getLocation(lat, lng)
+      setSelectedAddress(response.data?.items?.[0].title)
+    } catch (error) {
+      const message = getErrorMessage(error)
+      Toast.error(message, 'top')
+    }
+  }, [])
+
   return (
     <Modal visible={visible} style={{ flex: 1 }} animationType="fade">
       <View style={styles.modalContent}>
@@ -64,13 +86,24 @@ export const LocationModal = ({ visible, onSelect, onClose }: LocationModalProps
           )}
         </View>
 
-        <LocationMapView address={selectedAddress} />
+        <LocationMapView
+          address={selectedAddress}
+          currentLocation={currentLocation}
+          onMapPress={handleMapPress}
+        />
 
         <AppButton
+          styles={{
+            position: 'absolute',
+            bottom: 0
+          }}
           text="Confirm"
           type="primary"
           onPress={() => {
-            onSelect?.(selectedAddress)
+            onSelect?.({
+              event_address: selectedAddress,
+              event_position: currentLocation
+            })
             onClose?.()
           }}
           textColor={COLORS.white}

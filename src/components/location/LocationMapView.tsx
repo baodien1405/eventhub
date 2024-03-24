@@ -1,65 +1,74 @@
-import React, { useEffect, useState } from 'react'
-import MapView from 'react-native-maps'
 import Geolocation from '@react-native-community/geolocation'
-import { Toast } from 'toastify-react-native'
+import React, { useEffect } from 'react'
 import Geocoder from 'react-native-geocoding'
+import MapView from 'react-native-maps'
+import { Toast } from 'toastify-react-native'
 
 import { APP } from '@/constants'
+import { Position } from '@/models'
 
 interface LocationMapViewProps {
   address: string
+  currentLocation: Position
+  onMapPress: (location: Position) => void
 }
 
-Geocoder.init(process.env.API_KEY_GOOGLE_MAP as string)
-
-export const LocationMapView = ({ address }: LocationMapViewProps) => {
-  const [currentLocation, setCurrentLocation] = useState({
-    latitude: 0,
-    longitude: 0
-  })
-
+export const LocationMapView = ({ address, currentLocation, onMapPress }: LocationMapViewProps) => {
   useEffect(() => {
     Geocoder.from(address)
       .then((position) => {
         const location = position.results[0].geometry.location
 
         if (location) {
-          setCurrentLocation({
-            latitude: location.lat,
-            longitude: location.lng
+          onMapPress({
+            lat: location.lat,
+            lng: location.lng
           })
         }
       })
-      .catch((error) => Toast.error(error.message, 'top'))
-  }, [address])
+      .catch((error) => {
+        Toast.error(error.message, 'top')
+      })
+  }, [address, onMapPress])
 
   useEffect(() => {
     Geolocation.getCurrentPosition(
       (position: any) => {
         if (position.coords) {
-          setCurrentLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude
+          onMapPress({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
           })
         }
       },
       (error: any) => Toast.error(error.message, 'top'),
       {}
     )
-  }, [])
+  }, [onMapPress])
 
   return (
     <MapView
-      style={{ width: APP.sizes.WIDTH, height: 500, marginVertical: 40, zIndex: -1 }}
       showsMyLocationButton
       showsUserLocation
       mapType="standard"
+      style={{
+        width: APP.sizes.WIDTH,
+        height: APP.sizes.HEIGHT - 220,
+        marginVertical: 40,
+        zIndex: -1
+      }}
       region={{
-        latitude: currentLocation.latitude,
-        longitude: currentLocation.longitude,
+        latitude: currentLocation.lat,
+        longitude: currentLocation.lng,
         latitudeDelta: 0.001,
         longitudeDelta: 0.015
       }}
+      onPress={(event) =>
+        onMapPress({
+          lat: event.nativeEvent.coordinate.latitude,
+          lng: event.nativeEvent.coordinate.longitude
+        })
+      }
     />
   )
 }

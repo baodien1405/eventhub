@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ArrowRight } from 'iconsax-react-native'
+import { ArrowRight, LocationAdd } from 'iconsax-react-native'
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { View } from 'react-native'
@@ -45,7 +45,11 @@ export function EventForm({ isAddSuccess, initialValues, loading, onSubmit }: Ev
         ? { file: null, previewUrl: initialValues.event_thumbnail_url }
         : null,
       ...initialValues,
-      event_price: initialValues?.event_price ? String(initialValues.event_price) : ''
+      event_price: initialValues?.event_price ? String(initialValues.event_price) : '',
+      event_location: {
+        event_address: initialValues?.event_address,
+        event_position: initialValues?.event_position
+      }
     },
     resolver: yupResolver<yup.AnyObject>(schema)
   })
@@ -89,8 +93,11 @@ export function EventForm({ isAddSuccess, initialValues, loading, onSubmit }: Ev
 
       formValues.event_thumbnail_url = thumbnailUrl
       formValues.event_price = Number(formValues.event_price)
+      formValues.event_address = formValues.event_location?.event_address
+      formValues.event_position = formValues.event_location?.event_position
 
       delete formValues.event_thumbnail
+      delete formValues.event_location
     }
 
     onSubmit?.(formValues)
@@ -168,10 +175,19 @@ export function EventForm({ isAddSuccess, initialValues, loading, onSubmit }: Ev
         placeholder="Select date"
       />
 
+      <InputField
+        name="event_location_name"
+        label="Location Name"
+        control={control}
+        placeholder="Enter a location name"
+        prefix={<LocationAdd size={15} color={COLORS.primary} />}
+        allowClear
+      />
+
       <LocationPickerField
         label="Location"
         placeholder="Select an address"
-        name="location"
+        name="event_location"
         control={control}
       />
 

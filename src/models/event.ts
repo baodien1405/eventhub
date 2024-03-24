@@ -8,6 +8,14 @@ export type EventDetailsScreenProps = NativeStackScreenProps<
   'EventDetailsScreen'
 >
 
+export interface EventLocation {
+  event_address: string
+  event_position: {
+    lat: number
+    lng: number
+  }
+}
+
 export interface Event {
   _id: string
   event_title: string
@@ -20,6 +28,12 @@ export interface Event {
   event_category: string
   event_price: string | number
   event_author: User
+  event_location_name: string
+  event_address: string
+  event_position: {
+    lat: number
+    lng: number
+  }
 }
 
 export interface EventPayload extends Event {
@@ -27,5 +41,5 @@ export interface EventPayload extends Event {
     file: Image | null
     previewUrl: string
   }
-  location: any
+  event_location: EventLocation
 }

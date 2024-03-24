@@ -48,6 +48,18 @@ export const useEventSchema = ({ initialValues }: UseEventSchemaProps) => {
         const MAX_SIZE = 3 * MB_TO_BYTES // 3MB
 
         return fileSize <= MAX_SIZE
+      }),
+    event_location_name: yup
+      .string()
+      .required('Please enter a location name')
+      .trim('Please enter a suffix with no leading or trailing spaces'),
+    event_location: yup
+      .object()
+      .nullable()
+      .test((value: any, context) => {
+        if (value?.event_address) return true
+
+        return context.createError({ message: 'Please select a address.' })
       })
   })
 

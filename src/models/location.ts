@@ -27,7 +27,7 @@ export interface Location {
   title: string
 }
 
-interface Position {
+export interface Position {
   lat: number
   lng: number
 }
