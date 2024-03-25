@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Modal, StyleSheet, View } from 'react-native'
 import { Toast } from 'toastify-react-native'
 import Geocoder from 'react-native-geocoding'
@@ -7,7 +7,7 @@ import { locationApi } from '@/api'
 import { AppButton, LocationFilters, LocationList, LocationMapView } from '@/components'
 import { EventLocation, LocationPayload, Position } from '@/models'
 import { getErrorMessage } from '@/utils'
-import { COLORS, FONT_FAMILIES } from '@/constants'
+import { APP, COLORS, FONT_FAMILIES } from '@/constants'
 
 interface LocationModalProps {
   visible: boolean
@@ -25,6 +25,23 @@ export const LocationModal = ({ visible, onSelect, onClose }: LocationModalProps
     lat: 0,
     lng: 0
   })
+
+  useEffect(() => {
+    Geocoder.from(selectedAddress)
+      .then((position) => {
+        const location = position.results[0].geometry.location
+
+        if (location) {
+          setCurrentLocation({
+            lat: location.lat,
+            lng: location.lng
+          })
+        }
+      })
+      .catch((error) => {
+        Toast.error(error.message, 'top')
+      })
+  }, [selectedAddress])
 
   const handleFiltersChange = async (payload: LocationPayload) => {
     try {
@@ -87,9 +104,14 @@ export const LocationModal = ({ visible, onSelect, onClose }: LocationModalProps
         </View>
 
         <LocationMapView
-          address={selectedAddress}
           currentLocation={currentLocation}
           onMapPress={handleMapPress}
+          style={{
+            width: APP.sizes.WIDTH,
+            height: APP.sizes.HEIGHT - 220,
+            marginVertical: 40,
+            zIndex: -1
+          }}
         />
 
         <AppButton

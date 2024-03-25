@@ -2,37 +2,51 @@ import React from 'react'
 import { FlatList } from 'react-native'
 
 import { Tag } from '@/components'
-import { ArtSVG, FoodSVG, MusicSVG, SportSVG } from '@/assets/svg'
-import { FONT_FAMILIES } from '@/constants'
+import {
+  ArtFillSVG,
+  ArtSVG,
+  FoodFillSVG,
+  FoodSVG,
+  MusicFillSVG,
+  MusicSVG,
+  SportFillSVG,
+  SportSVG
+} from '@/assets/svg'
+import { COLORS, FONT_FAMILIES } from '@/constants'
+import { globalStyles } from '@/styles'
 
-export const CategoryList = () => {
+interface CategoryListProps {
+  isFill?: boolean
+}
+
+export const CategoryList = ({ isFill = true }: CategoryListProps) => {
   const CATEGORY_LIST = [
     {
       key: 'SPORTS',
       label: 'Sports',
-      bgColor: '#F0635A',
-      icon: <SportSVG />,
+      bgColor: isFill ? '#F0635A' : COLORS.white,
+      icon: isFill ? <SportSVG /> : <SportFillSVG />,
       onPress: () => {}
     },
     {
       key: 'MUSIC',
       label: 'Music',
-      bgColor: '#F59762',
-      icon: <MusicSVG />,
+      bgColor: isFill ? '#F59762' : COLORS.white,
+      icon: isFill ? <MusicSVG /> : <MusicFillSVG />,
       onPress: () => {}
     },
     {
       key: 'FOOD',
       label: 'Food',
-      bgColor: '#29D697',
-      icon: <FoodSVG />,
+      bgColor: isFill ? '#29D697' : COLORS.white,
+      icon: isFill ? <FoodSVG /> : <FoodFillSVG />,
       onPress: () => {}
     },
     {
       key: 'ART',
       label: 'Art',
-      bgColor: '#46CDFB',
-      icon: <ArtSVG />,
+      bgColor: isFill ? '#46CDFB' : COLORS.white,
+      icon: isFill ? <ArtSVG /> : <ArtFillSVG />,
       onPress: () => {}
     }
   ]
@@ -48,8 +62,9 @@ export const CategoryList = () => {
           label={item.label}
           bgColor={item.bgColor}
           icon={item.icon}
-          style={{ marginRight: 12, width: 100 }}
+          style={[{ marginRight: 12, width: 100 }, globalStyles.shadow]}
           textStyle={{ fontFamily: FONT_FAMILIES.medium }}
+          textColor={isFill ? COLORS.white : '#8A8D9F'}
           onPress={item.onPress}
         />
       )}

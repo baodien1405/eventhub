@@ -1,36 +1,18 @@
 import Geolocation from '@react-native-community/geolocation'
 import React, { useEffect } from 'react'
-import Geocoder from 'react-native-geocoding'
 import MapView from 'react-native-maps'
 import { Toast } from 'toastify-react-native'
+import { StyleProp, ViewStyle } from 'react-native'
 
-import { APP } from '@/constants'
 import { Position } from '@/models'
 
 interface LocationMapViewProps {
-  address: string
   currentLocation: Position
+  style?: StyleProp<ViewStyle>
   onMapPress: (location: Position) => void
 }
 
-export const LocationMapView = ({ address, currentLocation, onMapPress }: LocationMapViewProps) => {
-  useEffect(() => {
-    Geocoder.from(address)
-      .then((position) => {
-        const location = position.results[0].geometry.location
-
-        if (location) {
-          onMapPress({
-            lat: location.lat,
-            lng: location.lng
-          })
-        }
-      })
-      .catch((error) => {
-        Toast.error(error.message, 'top')
-      })
-  }, [address, onMapPress])
-
+export const LocationMapView = ({ currentLocation, style, onMapPress }: LocationMapViewProps) => {
   useEffect(() => {
     Geolocation.getCurrentPosition(
       (position: any) => {
@@ -51,12 +33,7 @@ export const LocationMapView = ({ address, currentLocation, onMapPress }: Locati
       showsMyLocationButton
       showsUserLocation
       mapType="standard"
-      style={{
-        width: APP.sizes.WIDTH,
-        height: APP.sizes.HEIGHT - 220,
-        marginVertical: 40,
-        zIndex: -1
-      }}
+      style={style}
       region={{
         latitude: currentLocation.lat,
         longitude: currentLocation.lng,
