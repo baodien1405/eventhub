@@ -1,7 +1,7 @@
 import { Image } from 'react-native-image-crop-picker'
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { EventStackNavigatorParamList, User } from '@/models'
+import { EventStackNavigatorParamList, ListParams, User } from '@/models'
 
 export type EventDetailsScreenProps = NativeStackScreenProps<
   EventStackNavigatorParamList,
@@ -42,4 +42,10 @@ export interface EventPayload extends Event {
     previewUrl: string
   }
   event_location: EventLocation
+}
+
+export interface EventListParams extends ListParams {
+  lat: number
+  lng: number
+  distance: number
 }

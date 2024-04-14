@@ -1,9 +1,9 @@
-import { SuccessResponse, Event, ListParams, ListResponse } from '@/models'
+import { SuccessResponse, Event, ListResponse, EventListParams } from '@/models'
 import { API_ENDPOINTS } from '@/constants'
 import axiosClient from './axiosClient'
 
 export const eventApi = {
-  getAll(params: Partial<ListParams>): Promise<SuccessResponse<ListResponse<Event>>> {
+  getAll(params: Partial<EventListParams>): Promise<SuccessResponse<ListResponse<Event>>> {
     return axiosClient.get(API_ENDPOINTS.URL_EVENT_LIST, { params })
   },
 

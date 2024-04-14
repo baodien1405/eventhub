@@ -1,15 +1,19 @@
 import React, { useCallback, useState } from 'react'
-import { StatusBar, StyleSheet, View } from 'react-native'
-
-import { CategoryList, InputField, LocationMapView, Row, Space } from '@/components'
-import { Position } from '@/models'
-import { APP, COLORS } from '@/constants'
+import { StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useForm } from 'react-hook-form'
 import { ArrowLeft2 } from 'iconsax-react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+
+import { CategoryList, InputField, LocationMapView, Row, Space } from '@/components'
+import { Event, Position } from '@/models'
+import { APP, COLORS } from '@/constants'
 import { globalStyles } from '@/styles'
+import { eventApi } from '@/api'
+import { getErrorMessage } from '@/utils'
+import { Toast } from 'toastify-react-native'
 
 export const MapScreen = ({ navigation }: any) => {
+  const [eventList, setEventList] = useState<Array<Event>>([])
   const [currentLocation, setCurrentLocation] = useState<Position>({
     lat: 0,
     lng: 0
@@ -24,11 +28,28 @@ export const MapScreen = ({ navigation }: any) => {
     })
   }, [])
 
+  const handleGetNearbyEventList = async () => {
+    try {
+      const response = await eventApi.getAll({
+        page: 1,
+        limit: 50,
+        lat: currentLocation.lat,
+        lng: currentLocation.lng,
+        distance: 5
+      })
+      setEventList(response.metadata?.results || [])
+    } catch (error) {
+      const message = getErrorMessage(error)
+      Toast.error(message, 'top')
+    }
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <StatusBar barStyle="dark-content" />
 
       <LocationMapView
+        nearByEventList={eventList}
         currentLocation={currentLocation}
         onMapPress={handleMapPress}
         style={{
@@ -71,9 +92,11 @@ export const MapScreen = ({ navigation }: any) => {
 
           <Space width={12} />
 
-          <View style={[styles.wrapperIcon, globalStyles.shadow]}>
-            <MaterialIcons name="my-location" size={24} color={COLORS.primary} />
-          </View>
+          <TouchableOpacity onPress={handleGetNearbyEventList}>
+            <View style={[styles.wrapperIcon, globalStyles.shadow]}>
+              <MaterialIcons name="my-location" size={24} color={COLORS.primary} />
+            </View>
+          </TouchableOpacity>
         </Row>
 
         <Space height={20} />

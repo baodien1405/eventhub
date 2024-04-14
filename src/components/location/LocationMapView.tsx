@@ -1,18 +1,25 @@
 import Geolocation from '@react-native-community/geolocation'
 import React, { useEffect } from 'react'
-import MapView from 'react-native-maps'
+import MapView, { Marker } from 'react-native-maps'
 import { Toast } from 'toastify-react-native'
 import { StyleProp, ViewStyle } from 'react-native'
 
-import { Position } from '@/models'
+import { Event, Position } from '@/models'
+import { MarkerContent } from '@/components/map'
 
 interface LocationMapViewProps {
+  nearByEventList: Array<Event>
   currentLocation: Position
   style?: StyleProp<ViewStyle>
   onMapPress: (location: Position) => void
 }
 
-export const LocationMapView = ({ currentLocation, style, onMapPress }: LocationMapViewProps) => {
+export const LocationMapView = ({
+  nearByEventList = [],
+  currentLocation,
+  style,
+  onMapPress
+}: LocationMapViewProps) => {
   useEffect(() => {
     Geolocation.getCurrentPosition(
       (position: any) => {
@@ -46,6 +53,20 @@ export const LocationMapView = ({ currentLocation, style, onMapPress }: Location
           lng: event.nativeEvent.coordinate.longitude
         })
       }
-    />
+    >
+      {nearByEventList.map((event) => (
+        <Marker
+          key={event._id}
+          title={event.event_title}
+          description={event.event_description}
+          coordinate={{
+            latitude: event.event_position.lat,
+            longitude: event.event_position.lng
+          }}
+        >
+          <MarkerContent category={event.event_category} onPress={() => {}} />
+        </Marker>
+      ))}
+    </MapView>
   )
 }
