@@ -1,16 +1,23 @@
 import React, { useCallback, useState } from 'react'
-import { StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { FlatList, StatusBar, StyleSheet, TouchableOpacity, View } from 'react-native'
 import { useForm } from 'react-hook-form'
 import { ArrowLeft2 } from 'iconsax-react-native'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { Toast } from 'toastify-react-native'
 
-import { CategoryList, InputField, LocationMapView, Row, Space } from '@/components'
+import {
+  CategoryList,
+  EventCardHorizontal,
+  InputField,
+  LocationMapView,
+  Row,
+  Space
+} from '@/components'
 import { Event, Position } from '@/models'
 import { APP, COLORS } from '@/constants'
 import { globalStyles } from '@/styles'
 import { eventApi } from '@/api'
 import { getErrorMessage } from '@/utils'
-import { Toast } from 'toastify-react-native'
 
 export const MapScreen = ({ navigation }: any) => {
   const [eventList, setEventList] = useState<Array<Event>>([])
@@ -58,16 +65,7 @@ export const MapScreen = ({ navigation }: any) => {
         }}
       />
 
-      <View
-        style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          left: 0,
-          padding: 20,
-          paddingTop: 48
-        }}
-      >
+      <View style={styles.headingContainer}>
         <Row>
           <View style={[{ flex: 1 }, globalStyles.shadow]}>
             <InputField
@@ -103,6 +101,15 @@ export const MapScreen = ({ navigation }: any) => {
 
         <CategoryList isFill={false} />
       </View>
+
+      <View style={styles.footerContainer}>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={eventList}
+          renderItem={({ item }) => <EventCardHorizontal key={item._id} event={item} />}
+        />
+      </View>
     </View>
   )
 }
@@ -118,5 +125,19 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  headingContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    left: 0,
+    padding: 20,
+    paddingTop: 48
+  },
+  footerContainer: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0
   }
 })
