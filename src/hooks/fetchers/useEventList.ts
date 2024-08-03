@@ -2,14 +2,14 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
 import { eventApi } from '@/api'
 import { QueryKeys } from '@/constants'
-import { Event, ListParams, ListResponse, SuccessResponse } from '@/models'
+import { Event, EventListParams, ListResponse, SuccessResponse } from '@/models'
 
 type UseEventListOptions = Omit<
   UseQueryOptions<SuccessResponse<ListResponse<Event>>>,
   'queryKey' | 'queryFn'
 >
 interface UseEventListProps {
-  params?: Partial<ListParams>
+  params?: Partial<EventListParams>
   options?: UseEventListOptions
 }
 

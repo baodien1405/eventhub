@@ -2,21 +2,18 @@ import React from 'react'
 import { FlatList } from 'react-native'
 
 import { EventCard } from '@/components'
-import { useEventList } from '@/hooks'
+import { Event } from '@/models'
 
-export const EventList = () => {
-  const { data } = useEventList({
-    params: {
-      page: 1,
-      limit: 30
-    }
-  })
+interface EventListProps {
+  eventList?: Event[]
+}
 
+export const EventList = ({ eventList = [] }: EventListProps) => {
   return (
     <FlatList
       horizontal
       showsHorizontalScrollIndicator={false}
-      data={data?.metadata.results || []}
+      data={eventList}
       renderItem={({ item }) => <EventCard key={item._id} event={item} />}
     />
   )

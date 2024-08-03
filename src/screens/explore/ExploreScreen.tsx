@@ -1,6 +1,6 @@
 import { DrawerActions } from '@react-navigation/native'
 import { Notification, SearchNormal1, Sort } from 'iconsax-react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import {
   ImageBackground,
   Platform,
@@ -25,10 +25,29 @@ import {
   EventList
 } from '@/components'
 import { APP, COLORS, FONT_FAMILIES } from '@/constants'
-import { ExploreScreenProps } from '@/models'
+import { ExploreScreenProps, Location } from '@/models'
 import { globalStyles } from '@/styles'
+import { useEventList } from '@/hooks'
 
 export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
+  const [currentLocation, setCurrentLocation] = useState<Location>()
+  const eventListQuery = useEventList({
+    params: {
+      page: 1,
+      limit: 30
+    }
+  })
+
+  const nearByEventListQuery = useEventList({
+    params: {
+      page: 1,
+      limit: 30,
+      lat: currentLocation?.position.lat,
+      lng: currentLocation?.position.lng,
+      distance: currentLocation?.distance
+    }
+  })
+
   return (
     <View style={[globalStyles.container]}>
       <StatusBar barStyle="light-content" />
@@ -39,7 +58,10 @@ export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
           </TouchableOpacity>
 
           <View style={{ flex: 1, alignItems: 'center' }}>
-            <CurrentLocation />
+            <CurrentLocation
+              currentLocation={currentLocation}
+              setCurrentLocation={setCurrentLocation}
+            />
           </View>
 
           <Circle size={36} color="#5D56F3">
@@ -85,7 +107,7 @@ export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
         <TabBar title="Upcoming Events" onPress={() => {}} />
 
         <View style={{ marginTop: 10, marginBottom: 14 }}>
-          <EventList />
+          <EventList eventList={eventListQuery.data?.metadata.results} />
         </View>
 
         <View style={styles.invite}>
@@ -128,7 +150,7 @@ export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
         <TabBar title="Nearby You" onPress={() => {}} />
 
         <View style={{ marginTop: 10, marginBottom: 14 }}>
-          <EventList />
+          <EventList eventList={nearByEventListQuery.data?.metadata.results} />
         </View>
       </ScrollView>
     </View>

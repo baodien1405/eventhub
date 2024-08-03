@@ -1,16 +1,34 @@
 import { ArrowDown2 } from 'iconsax-react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import Geolocation from '@react-native-community/geolocation'
+import { Toast } from 'toastify-react-native'
 
 import { AppText, Row } from '@/components'
 import { COLORS, FONT_FAMILIES } from '@/constants'
 import { locationApi } from '@/api'
 import { Location } from '@/models'
 import { getErrorMessage } from '@/utils'
-import { Toast } from 'toastify-react-native'
 
-export const CurrentLocation = () => {
-  const [currentLocation, setCurrentLocation] = useState<Location>()
+interface CurrentLocationProps {
+  currentLocation?: Location
+  setCurrentLocation: React.Dispatch<React.SetStateAction<Location | undefined>>
+}
+
+export const CurrentLocation = ({ currentLocation, setCurrentLocation }: CurrentLocationProps) => {
+  const reverseGeoCode = useCallback(
+    async ({ lat, long }: { lat: number; long: number }) => {
+      try {
+        const response = await locationApi.getLocation(lat, long)
+        if (response?.data) {
+          setCurrentLocation(response.data?.items?.[0])
+        }
+      } catch (error) {
+        const message = getErrorMessage(error)
+        Toast.error(message, 'top')
+      }
+    },
+    [setCurrentLocation]
+  )
 
   useEffect(() => {
     Geolocation.getCurrentPosition(
@@ -25,19 +43,7 @@ export const CurrentLocation = () => {
       (error: any) => Toast.error(error.message, 'top'),
       {}
     )
-  }, [])
-
-  const reverseGeoCode = async ({ lat, long }: { lat: number; long: number }) => {
-    try {
-      const response = await locationApi.getLocation(lat, long)
-      if (response?.data) {
-        setCurrentLocation(response.data?.items?.[0])
-      }
-    } catch (error) {
-      const message = getErrorMessage(error)
-      Toast.error(message, 'top')
-    }
-  }
+  }, [reverseGeoCode])
 
   return (
     <>
