@@ -107,7 +107,10 @@ export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
         <TabBar title="Upcoming Events" onPress={() => {}} />
 
         <View style={{ marginTop: 10, marginBottom: 14 }}>
-          <EventList eventList={eventListQuery.data?.metadata.results} />
+          <EventList
+            loading={eventListQuery.isFetching}
+            eventList={eventListQuery.data?.metadata.results}
+          />
         </View>
 
         <View style={styles.invite}>
@@ -150,7 +153,10 @@ export const ExploreScreen = ({ navigation }: ExploreScreenProps) => {
         <TabBar title="Nearby You" onPress={() => {}} />
 
         <View style={{ marginTop: 10, marginBottom: 14 }}>
-          <EventList eventList={nearByEventListQuery.data?.metadata.results} />
+          <EventList
+            loading={nearByEventListQuery.isFetching}
+            eventList={nearByEventListQuery.data?.metadata.results}
+          />
         </View>
       </ScrollView>
     </View>
