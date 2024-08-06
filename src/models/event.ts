@@ -24,6 +24,7 @@ export interface Event {
   event_end_at: Date
   event_date: Date
   event_invite_users: string[]
+  event_followers: string[]
   event_thumbnail_url: string
   event_category: string
   event_price: string | number

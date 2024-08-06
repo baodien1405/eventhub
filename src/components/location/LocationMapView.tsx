@@ -8,7 +8,7 @@ import { Event, Position } from '@/models'
 import { MarkerContent } from '@/components/map'
 
 interface LocationMapViewProps {
-  nearByEventList: Array<Event>
+  nearByEventList?: Array<Event>
   currentLocation: Position
   style?: StyleProp<ViewStyle>
   onMapPress: (location: Position) => void

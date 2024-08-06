@@ -18,10 +18,15 @@ import { EventCalendarSVG, EventLocationSVG } from '@/assets/svg'
 import { globalStyles } from '@/styles'
 import { EventDetailsScreenProps } from '@/models'
 import { useEventDetails } from '@/hooks'
+import { useAuthStore } from '@/store'
 
 export const EventDetailsScreen = ({ navigation, route }: EventDetailsScreenProps) => {
   const eventId = route.params.eventId
   const { data, isLoading, isError } = useEventDetails(eventId)
+  const { profile } = useAuthStore()
+  const currentUserId = profile?._id as string
+  const eventFollowerList = data?.metadata?.event_followers || []
+  const hasFollowEvent = eventFollowerList.includes(currentUserId)
 
   if (isLoading) {
     return <LoadingModal visible={isLoading} />
@@ -29,6 +34,18 @@ export const EventDetailsScreen = ({ navigation, route }: EventDetailsScreenProp
 
   if (isError) {
     return <AppText text="Error fetching event details." />
+  }
+
+  const handleFollowEvent = () => {
+    if (hasFollowEvent) {
+      const foundIndex = eventFollowerList.findIndex((follower) => follower === currentUserId)
+
+      if (foundIndex !== -1) {
+        eventFollowerList.splice(foundIndex, 1)
+      }
+    } else {
+      eventFollowerList.push(currentUserId)
+    }
   }
 
   return (
@@ -61,24 +78,48 @@ export const EventDetailsScreen = ({ navigation, route }: EventDetailsScreenProp
               font={FONT_FAMILIES.medium}
             />
 
-            <View style={styles.bookmark}>
-              <FontAwesome6 solid name="bookmark" size={15} color={COLORS.white} />
-            </View>
+            <Row
+              styles={[
+                styles.bookmark,
+                { backgroundColor: hasFollowEvent ? COLORS.white : 'rgba(256, 256, 256, 0.3)' }
+              ]}
+              onPress={handleFollowEvent}
+            >
+              <FontAwesome6
+                name="bookmark"
+                solid
+                size={15}
+                color={hasFollowEvent ? COLORS.error : COLORS.white}
+              />
+            </Row>
           </Row>
         </LinearGradient>
 
         <View style={[styles.wrapperInvite, globalStyles.shadow]}>
           <Row justify="space-between" styles={styles.inviteContent}>
-            <View style={{ flex: 1 }}>
-              <AvatarGroup avatarSize={34} textStyle={{ fontSize: 15 }} />
-            </View>
+            {data?.metadata.event_invite_users?.length ? (
+              <>
+                <View style={{ flex: 1 }}>
+                  <AvatarGroup avatarSize={34} textStyle={{ fontSize: 15 }} />
+                </View>
 
-            <AppButton
-              text="Invite"
-              textColor={COLORS.white}
-              textStyles={{ fontSize: 12, fontFamily: FONT_FAMILIES.regular }}
-              styles={styles.inviteBtn}
-            />
+                <AppButton
+                  text="Invite"
+                  textColor={COLORS.white}
+                  textStyles={{ fontSize: 12, fontFamily: FONT_FAMILIES.regular }}
+                  styles={styles.inviteBtn}
+                />
+              </>
+            ) : (
+              <View style={{ flex: 1, padding: 14 }}>
+                <AppButton
+                  text="Invite"
+                  textColor={COLORS.white}
+                  textStyles={{ fontSize: 12, fontFamily: FONT_FAMILIES.regular }}
+                  styles={styles.inviteBtn}
+                />
+              </View>
+            )}
           </Row>
         </View>
       </ImageBackground>
@@ -251,7 +292,6 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 7,
-    backgroundColor: 'rgba(256, 256, 256, 0.3)',
     justifyContent: 'center',
     alignItems: 'center'
   },
