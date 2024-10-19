@@ -4,11 +4,15 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import { NavigationProp, useNavigation } from '@react-navigation/native'
 import { Location } from 'iconsax-react-native'
 import dayjs from 'dayjs'
+import { Toast } from 'toastify-react-native'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { AppText, AvatarGroup, Row } from '@/components'
 import { globalStyles } from '@/styles'
-import { APP, COLORS, FONT_FAMILIES, SCREENS } from '@/constants'
+import { APP, COLORS, FONT_FAMILIES, QueryKeys, SCREENS } from '@/constants'
 import { Event } from '@/models'
+import { useAuthStore } from '@/store'
+import { useUpdateEventMutation } from '@/hooks'
 
 interface EventCardProps {
   event: Event
@@ -16,6 +20,40 @@ interface EventCardProps {
 
 export const EventCard = ({ event }: EventCardProps) => {
   const navigation = useNavigation<NavigationProp<any>>()
+  const { profile } = useAuthStore()
+  const { mutateAsync, isPending } = useUpdateEventMutation()
+  const queryClient = useQueryClient()
+
+  const currentUserId = profile?._id as string
+  const eventFollowerList = event?.event_followers || []
+  const hasFollowEvent = eventFollowerList.includes(currentUserId)
+
+  const handleFollowEvent = async () => {
+    if (isPending) return
+
+    try {
+      if (hasFollowEvent) {
+        const foundIndex = eventFollowerList.findIndex((follower) => follower === currentUserId)
+
+        if (foundIndex !== -1) {
+          eventFollowerList.splice(foundIndex, 1)
+        }
+      } else {
+        eventFollowerList.push(currentUserId)
+      }
+
+      await mutateAsync({
+        ...event,
+        event_followers: eventFollowerList
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: [QueryKeys.EVENT_DETAILS, event._id]
+      })
+    } catch (error: any) {
+      Toast.error(error.message, 'top')
+    }
+  }
 
   return (
     <TouchableOpacity
@@ -53,9 +91,20 @@ export const EventCard = ({ event }: EventCardProps) => {
           />
         </View>
 
-        <View style={styles.badge}>
-          <FontAwesome6 solid name="bookmark" size={14} color={COLORS.error} />
-        </View>
+        <TouchableOpacity
+          style={[
+            styles.badge,
+            { backgroundColor: hasFollowEvent ? COLORS.white : 'rgba(256, 256, 256, 0.3)' }
+          ]}
+          onPress={handleFollowEvent}
+        >
+          <FontAwesome6
+            solid
+            name="bookmark"
+            size={14}
+            color={hasFollowEvent ? COLORS.error : COLORS.white}
+          />
+        </TouchableOpacity>
       </ImageBackground>
 
       <AppText

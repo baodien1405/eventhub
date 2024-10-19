@@ -1,3 +1,4 @@
 export * from './validations'
 export * from './common'
-export * from './fetchers'
+export * from './queries'
+export * from './mutations'

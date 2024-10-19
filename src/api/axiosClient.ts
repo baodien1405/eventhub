@@ -17,7 +17,8 @@ const HEADER = {
 }
 
 const axiosClient = axios.create({
-  baseURL: process.env.API_URL,
+  // baseURL: process.env.API_URL,
+  baseURL: 'http:localhost:8018/v1/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
@@ -26,7 +27,6 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use(
   async (config) => {
-    console.log('🚀 ~ config:', config.baseURL)
     const accessToken = await getAccessTokenFromAS()
     const profile = await getProfileFromAS()
 

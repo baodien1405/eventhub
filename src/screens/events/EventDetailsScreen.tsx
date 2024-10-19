@@ -11,24 +11,26 @@ import { ArrowLeft, ArrowRight, Edit2 } from 'iconsax-react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6'
 import dayjs from 'dayjs'
+import { Toast } from 'toastify-react-native'
 
 import { APP, COLORS, FONT_FAMILIES, FORMAT_TYPES, SCREENS } from '@/constants'
 import { AppButton, AppText, AvatarGroup, LoadingModal, Row, Section } from '@/components'
 import { EventCalendarSVG, EventLocationSVG } from '@/assets/svg'
 import { globalStyles } from '@/styles'
 import { EventDetailsScreenProps } from '@/models'
-import { useEventDetails } from '@/hooks'
+import { useEventDetails, useUpdateEventMutation } from '@/hooks'
 import { useAuthStore } from '@/store'
 
 export const EventDetailsScreen = ({ navigation, route }: EventDetailsScreenProps) => {
   const eventId = route.params.eventId
-  const { data, isLoading, isError } = useEventDetails(eventId)
+  const { mutateAsync, isPending } = useUpdateEventMutation()
+  const { data, isLoading, isError, refetch } = useEventDetails(eventId)
   const { profile } = useAuthStore()
   const currentUserId = profile?._id as string
   const eventFollowerList = data?.metadata?.event_followers || []
   const hasFollowEvent = eventFollowerList.includes(currentUserId)
 
-  if (isLoading) {
+  if (isLoading || isPending) {
     return <LoadingModal visible={isLoading} />
   }
 
@@ -36,15 +38,28 @@ export const EventDetailsScreen = ({ navigation, route }: EventDetailsScreenProp
     return <AppText text="Error fetching event details." />
   }
 
-  const handleFollowEvent = () => {
-    if (hasFollowEvent) {
-      const foundIndex = eventFollowerList.findIndex((follower) => follower === currentUserId)
+  const handleFollowEvent = async () => {
+    if (isPending) return
 
-      if (foundIndex !== -1) {
-        eventFollowerList.splice(foundIndex, 1)
+    try {
+      if (hasFollowEvent) {
+        const foundIndex = eventFollowerList.findIndex((follower) => follower === currentUserId)
+
+        if (foundIndex !== -1) {
+          eventFollowerList.splice(foundIndex, 1)
+        }
+      } else {
+        eventFollowerList.push(currentUserId)
       }
-    } else {
-      eventFollowerList.push(currentUserId)
+
+      await mutateAsync({
+        ...data?.metadata,
+        event_followers: eventFollowerList
+      })
+
+      refetch()
+    } catch (error: any) {
+      Toast.error(error.message, 'top')
     }
   }
 
